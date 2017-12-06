@@ -1,0 +1,44 @@
+<div id="zoning-view" class="col-md-12">
+    <div class="card">
+        <div class="header">
+            <h4 class="title">Repérage de zones</h4>
+        </div>
+        <div class="content">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Images à repérer</label>
+                        <input type="file" onchange="angular.element(this).scope().onFile(this.files[0])">
+                    </div>
+                    <div ng-if="dataUrl">
+                        <button class="btn btn-info btn-fill" ng-click="scale()">Coordonnées de la zone</button>
+                        <button class="btn btn-info btn-fill" ng-click="clear()">Clear selection</button>
+                        <div>
+                            <h4>
+                                <span>Left: {{ cropZone.x | number:0 }}</span>
+                                <span>Top: {{ cropZone.y | number:0 }}</span>
+                                <span>Right: {{ (cropZone.x - cropZone.width) | number:0 }}</span>
+                                <span>Bottom: {{ (cropZone.y - cropZone.height) | number:0 }}</span>
+                            </h4>
+
+                            <h4>
+                                <span>Left: {{ cropZone.x | number:0 }}</span>
+                                <span>Top: {{ cropZone.y | number:0 }}</span>
+                                <span>Width: {{cropZone.width | number:0 }}</span>
+                                <span>Height: {{ cropZone.height | number:0 }}</span>
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div ng-if="dataUrl" class="img-container">
+                        <img ng-if="dataUrl" ng-src="{{dataUrl}}" ng-cropper ng-cropper-proxy="cropperProxy" ng-cropper-show="showEvent" ng-cropper-hide="hideEvent" ng-cropper-options="options">
+                    </div>
+                    <div class="preview-container">
+                        <img ng-if="preview.dataUrl" ng-src="{{ preview.dataUrl }}">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

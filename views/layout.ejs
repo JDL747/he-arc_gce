@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>GCE - 2017</title>
+
+    <!-- Viewport mobile tag for sensible mobile support -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0'  />
+
+    <!--
+        Stylesheets and Preprocessors
+        ==============================
+
+        You can always bring in CSS files manually with `<link>` tags, or asynchronously
+        using a solution like AMD (RequireJS).  Or, if you like, you can take advantage
+        of Sails' conventional asset pipeline (boilerplate Gruntfile).
+
+        By default, stylesheets from your `assets/styles` folder are included
+        here automatically (between STYLES and STYLES END). Both CSS (.css) and LESS (.less)
+        are supported. In production, your styles will be minified and concatenated into
+        a single file.
+
+        To customize any part of the built-in behavior, just edit `tasks/pipeline.js`.
+        For example, here are a few things you could do:
+
+            + Change the order of your CSS files
+            + Import stylesheets from other directories
+            + Use a different or additional preprocessor, like SASS, SCSS or Stylus
+    -->
+
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">-->
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
+
+    <link rel="stylesheet" href="/bower_components/ng-cropper/dist/ngCropper.all.min.css">
+
+    <!--STYLES-->
+    <link rel="stylesheet" href="/styles/admin/animate.min.css">
+    <link rel="stylesheet" href="/styles/admin/bootstrap.min.css">
+    <link rel="stylesheet" href="/styles/admin/cropper.css">
+    <link rel="stylesheet" href="/styles/admin/light-bootstrap-dashboard.css">
+    <link rel="stylesheet" href="/styles/admin/pe-icon-7-stroke.css">
+    <link rel="stylesheet" href="/styles/importer.css">
+    <!--STYLES END-->
+  </head>
+
+  <body ng-app="gce-app">
+
+     <ui-view></ui-view>
+
+    <!--
+        Client-side Templates
+        ========================
+
+        HTML templates are important prerequisites of modern, rich client applications.
+        To work their magic, frameworks like Backbone, Angular, Ember, and Knockout require
+        that you load these templates client-side.
+
+        By default, your Gruntfile is configured to automatically load and precompile
+        client-side JST templates in your `assets/templates` folder, then
+        include them here automatically (between TEMPLATES and TEMPLATES END).
+
+        To customize this behavior to fit your needs, just edit `tasks/pipeline.js`.
+        For example, here are a few things you could do:
+
+            + Import templates from other directories
+            + Use a different template engine (handlebars, jade, dust, etc.)
+            + Internationalize your client-side templates using a server-side
+              stringfile before they're served.
+    -->
+
+    <!--TEMPLATES-->
+    
+    <!--TEMPLATES END-->
+
+
+    <!--
+
+      Client-side Javascript
+      ========================
+
+      You can always bring in JS files manually with `script` tags, or asynchronously
+      on the client using a solution like AMD (RequireJS).  Or, if you like, you can
+      take advantage of Sails' conventional asset pipeline (boilerplate Gruntfile).
+
+      By default, files in your `assets/js` folder are included here
+      automatically (between SCRIPTS and SCRIPTS END).  Both JavaScript (.js) and
+      CoffeeScript (.coffee) are supported. In production, your scripts will be minified
+      and concatenated into a single file.
+
+      To customize any part of the built-in behavior, just edit `tasks/pipeline.js`.
+      For example, here are a few things you could do:
+
+          + Change the order of your scripts
+          + Import scripts from other directories
+          + Use a different preprocessor, like TypeScript
+
+    -->
+
+    <!-- CDNJS -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
+    <script type="text/javascript" src="/bower_components/angular/angular.js"></script>
+    <script type="text/javascript" src="/bower_components/angular-animate/angular-animate.js"></script>
+    <script type="text/javascript" src="/bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script type="text/javascript" src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+    <script type="text/javascript" src="/bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+    <script type="text/javascript" src="/bower_components/lodash/dist/lodash.min.js"></script>
+    <script type="text/javascript" src="/bower_components/restangular/dist/restangular.js"></script>
+    <script type="text/javascript" src="/bower_components/angular-xeditable/dist/js/xeditable.js"></script>
+    <script type="text/javascript" src="/bower_components/angular-smart-table/dist/smart-table.min.js"></script>
+    <script type="text/javascript" src="/bower_components/angular-loading-bar/src/loading-bar.js"></script>
+    <script type="text/javascript" src="/bower_components/AngularJS-Toaster/toaster.min.js"></script>
+    <script type="text/javascript" src="/bower_components/angular-confirm/js/angular-confirm.js"></script>
+    <script type="text/javascript" src="/bower_components/ng-cropper/dist/cropper.js"></script>
+    <script type="text/javascript" src="/bower_components/ng-cropper/dist/ngCropper.all.js"></script>
+
+    <!--SCRIPTS-->
+    <script src="/js/dependencies/sails.io.js"></script>
+    <script src="/js/dependencies/vendors/bootstrap-notify.js"></script>
+    <script src="/js/dependencies/vendors/bootstrap-select.js"></script>
+    <script src="/js/dependencies/vendors/bootstrap.min.js"></script>
+    <script src="/js/dependencies/vendors/light-bootstrap-dashboard.js"></script>
+    <script src="/js/app.js"></script>
+    <script src="/js/controllers/IndexCtrl.js"></script>
+    <script src="/js/controllers/ZoningCtrl.js"></script>
+    <script src="/js/directives/CommonDirective.js"></script>
+    <script src="/js/filters/CommonFilter.js"></script>
+    <script src="/js/services/ESService.js"></script>
+    <!--SCRIPTS END-->
+
+  </body>
+</html>
