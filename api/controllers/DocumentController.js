@@ -2,6 +2,7 @@ const request = require('request');
 const fs = require('fs');
 const path = require('path');
 const chokidar = require('chokidar');
+const parseString = require('xml2js').parseString;
 
 /**
  * DocumentController
@@ -11,35 +12,81 @@ const chokidar = require('chokidar');
  */
 module.exports = {
 
-    find: function(req, res) {
+    OCRProcess: function(req, res) {
+        Document.findOne(req.param('id'))
+            .then(function(doc) {
 
-        SPService.RefreshFormDigestToken({}, function() {
+                Group.findOne(doc.owner)
+                    .then(function(group) {
 
-            let url = sails.config.sp_api_url + "/Web/GetFolderByServerRelativeUrl('/sites/mediacorp/Sony Entertainment')/Files";
+                        let cridentials = {
+                            'username': group.abbyy_user,
+                            'password': group.abbyy_password,
+                            'documentPath': doc.path
+                        };
 
-            let urlAddFolder = sails.config.sp_api_url + "/Web/Folders/add('/sites/mediacorp/Sony Entertainment/Test')";
+                        ABBYYService.submitImage(cridentials, function(results) {
 
-            let options = {
-                url: urlAddFolder,
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json;odata=verbose',
-                    'Content-Type': 'application/json;odata=verbose',
-                    'Authorization': 'Basic aGVhcmMuc2hhcmVwb2ludFxBZG1pbmlzdHJhdG9yOjk4Ny5zaGFyZXBvaW50',
-                    'X-RequestDigest': sails.config.sp_digest_token,
-                }
-            };
+                            parseString(results, function (err, result) {
+                                doc.process_result = results;
+                                doc.task_id = result.response.task[0]['$'].id;
+                                doc.save();
+                            });
 
-            request(options, function (error, response, body) {
-                if (error) sails.log.error(error);
-                return res.json(JSON.parse(body))
+                            return res.ok();
+
+                        });
+
+                    });
+
             });
-
-        });
-
     },
 
     upload: function(req, res) {
+
+        req.file('file').upload({ maxBytes: 100000000 }, function(errUpload, files) {
+
+            Group.findOne('5a280209595d36a8054e1728')
+                .then(function(group) {
+
+                    if (!group.batch_process_nb) {
+                        group.batch_process_nb = 0;
+                    }
+
+                    group.batch_process_nb = group.batch_process_nb + 1;
+                    group.save();
+
+                    async.each(files, function (uploadedFile, callback) {
+
+                        let uploadFolder = path.join(__dirname, `../../assets/uploads/ocr/${group.folder_name}/docs/batch_${group.batch_process_nb}/${uploadedFile.filename}`);
+                        let folderPath = path.join(__dirname, `../../assets/uploads/ocr/${group.folder_name}/docs/batch_${group.batch_process_nb}`);
+
+                        if (!fs.existsSync(folderPath)) {
+                            fs.mkdirSync(folderPath);
+                            fs.chmod(folderPath, '0777');
+                        }
+
+                        fs.rename(uploadedFile.fd, uploadFolder, function(err) {
+                            if (err) return sails.log.error(err);
+                            Document.create({
+                                'batch': group.batch_process_nb,
+                                'name': uploadedFile.filename,
+                                'path': `assets/uploads/ocr/${group.folder_name}/docs/batch_${group.batch_process_nb}/${uploadedFile.filename}`,
+                                'status': 'processing',
+                                'owner': group.id
+                            }, function(doc) { });
+
+                        });
+
+                    });
+
+                });
+
+                return res.json([]);
+        });
+    },
+
+    _upload: function(req, res) {
 
         SPService.RefreshFormDigestToken({}, function() {
 
@@ -103,6 +150,33 @@ module.exports = {
 
         });
 
+    },
+
+    _apiCall: function(req, res) {
+
+        SPService.refreshFormDigestToken({}, function() {
+
+            let url = sails.config.sp_api_url + "/Web/GetFolderByServerRelativeUrl('/sites/mediacorp/Sony Entertainment')/Files";
+
+            let urlAddFolder = sails.config.sp_api_url + "/Web/Folders/add('/sites/mediacorp/Sony Entertainment/Test')";
+
+            let options = {
+                url: urlAddFolder,
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json;odata=verbose',
+                    'Content-Type': 'application/json;odata=verbose',
+                    'Authorization': 'Basic aGVhcmMuc2hhcmVwb2ludFxBZG1pbmlzdHJhdG9yOjk4Ny5zaGFyZXBvaW50',
+                    'X-RequestDigest': sails.config.sp_digest_token,
+                }
+            };
+
+            request(options, function (error, response, body) {
+                if (error) sails.log.error(error);
+                return res.json(JSON.parse(body))
+            });
+
+        });
     }
 
 };

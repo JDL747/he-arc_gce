@@ -33,7 +33,15 @@ var jsFilesToInject = [
 
     // All of the rest of your client-side js files
     // will be injected here in no particular order.
-    'js/**/*.js'
+    // 'js/**/*.js',
+    'js/controllers/IndexCtrl.js',
+    'js/controllers/SettingCtrl.js',
+    'js/controllers/ZoningCtrl.js',
+    'js/controllers/DocumentCtrl.js',
+    'js/directives/CommonDirective.js',
+    'js/filters/CommonFilter.js',
+    'js/services/GCEService.js',
+    'js/app.js',
 ];
 
 

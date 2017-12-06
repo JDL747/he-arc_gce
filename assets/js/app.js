@@ -24,6 +24,8 @@ angular.module('gce-app',
 
         editableOptions.theme = 'bs3';
 
+        $rootScope.baseUrl = 'http://localhost:1337';
+
         $rootScope.$on('$viewContentLoaded', function() {
             $window.scrollTo(0, 0);
         });
@@ -38,8 +40,7 @@ angular.module('gce-app',
         $logProvider.debugEnabled(false);
         cfpLoadingBarProvider.includeSpinner = false;
 
-        RestangularProvider.setBaseUrl('http://86.119.28.188/sites/mediacorp');
-        RestangularProvider.setDefaultHttpFields({ 'withCredentials': true });
+        RestangularProvider.setBaseUrl('http://localhost:1337/');
 
         $stateProvider
             .state('index', {
@@ -51,7 +52,7 @@ angular.module('gce-app',
             .state('index.documents', {
                 url: '/documents',
                 templateUrl: '/templates/documents.html',
-                controller: 'IndexCtrl',
+                controller: 'DocumentCtrl',
             })
             .state('index.zoning', {
                 url: '/zoning',
@@ -66,7 +67,7 @@ angular.module('gce-app',
             .state('index.settings', {
                 url: '/settings',
                 templateUrl: '/templates/settings.html',
-                controller: 'IndexCtrl',
+                controller: 'SettingsCtrl',
             });
 
         /* If none of the above states are matched, use this as the fallback */

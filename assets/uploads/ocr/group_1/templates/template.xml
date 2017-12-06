@@ -1,0 +1,33 @@
+<document xmlns="http://ocrsdk.com/schema/taskDescription-1.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ocrsdk.com/schema/taskDescription-1.0.xsd http://ocrsdk.com/schema/taskDescription-1.0.xsd">
+
+	<fieldTemplates></fieldTemplates>	
+
+	<page applyTo="0">
+
+		<text id="date" left="224" top="1100" right="527" bottom="1136">
+	         <language>English</language>
+	         <textType>normal</textType>
+	         <oneTextLine>true</oneTextLine>
+	   	</text>
+
+	   	<text id="product_name" left="572" top="1332" right="757" bottom="1422">
+	         <language>English</language>
+	         <textType>normal</textType>
+	         <oneTextLine>true</oneTextLine>
+	   	</text>
+
+	   	<text id="station" left="1456" top="1102" right="1790" bottom="1135">
+	         <language>English</language>
+	         <textType>normal</textType>
+	         <oneTextLine>true</oneTextLine>
+	   	</text>
+
+	   	<text id="total_license_fee" left="218" top="2260" right="898" bottom="2304">
+	         <language>English</language>
+	         <textType>normal</textType>
+	         <oneTextLine>true</oneTextLine>
+	   	</text>
+
+	</page>
+
+</document>

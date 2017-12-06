@@ -4,16 +4,16 @@
             <h4 class="title">Information du Groupe</h4>
         </div>
         <div class="content">
-            <form>
+            <form novalidate>
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
                             <label>Nom du Groupe</label>
-                            <input type="text" class="form-control" disabled placeholder="Utilisateur">
+                            <input type="text" class="form-control" disabled placeholder="Utilisateur" ng-model="group.name">
                         </div>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-info btn-fill pull-right">Enregistrer</button>
+                <button type="button" class="btn btn-info btn-fill pull-right" ng-click="save(group)">Enregistrer</button>
                 <div class="clearfix"></div>
             </form>
         </div>
@@ -24,22 +24,48 @@
             <h4 class="title">Configuration ABBYY</h4>
         </div>
         <div class="content">
-            <form>
+            <form novalidate>
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
                             <label>Utilisateur</label>
-                            <input type="text" class="form-control" placeholder="Utilisateur">
+                            <input type="text" class="form-control" placeholder="Utilisateur" ng-model="group.abbyy_user">
                         </div>
                     </div>
                     <div class="col-md-12">
                         <div class="form-group">
                             <label>Mot de passe</label>
-                            <input type="password" class="form-control" placeholder="Mot de passe">
+                            <input type="password" class="form-control" placeholder="Mot de passe" ng-model="group.abbyy_password">
                         </div>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-info btn-fill pull-right">Enregistrer</button>
+                <button type="button" class="btn btn-info btn-fill pull-right" ng-click="save(group)">Enregistrer</button>
+                <div class="clearfix"></div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="header">
+            <h4 class="title">Template ABBYY</h4>
+        </div>
+        <div class="content">
+            <form novalidate>
+                <div class="row" file-upload>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Template 1</label>
+                            <input type="file" class="form-control" placeholder="Template 1" ng-model="groupe.abbyy_template_1">
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Template 2</label>
+                            <input type="file" class="form-control" placeholder="Template 2" ng-model="groupe.abbyy_template_2">
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-info btn-fill pull-right" ng-click="saveTemplates(group)">Enregistrer</button>
                 <div class="clearfix"></div>
             </form>
         </div>
@@ -50,28 +76,28 @@
             <h4 class="title">Configuration Sharepoint</h4>
         </div>
         <div class="content">
-            <form>
+            <form novalidate>
                 <div class="row">
                      <div class="col-md-12">
                         <div class="form-group">
                             <label>Url</label>
-                            <input type="text" class="form-control" placeholder="Url">
+                            <input type="text" class="form-control" placeholder="Url" ng-model="group.sp_url">
                         </div>
                     </div>
                     <div class="col-md-12">
                         <div class="form-group">
                             <label>Utilisateur</label>
-                            <input type="text" class="form-control" placeholder="Utilisateur">
+                            <input type="text" class="form-control" placeholder="Utilisateur" ng-model="group.sp_user">
                         </div>
                     </div>
                     <div class="col-md-12">
                         <div class="form-group">
                             <label>Mot de passe</label>
-                            <input type="password" class="form-control" placeholder="Mot de passe">
+                            <input type="password" class="form-control" placeholder="Mot de passe" ng-model="group.sp_password">
                         </div>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-info btn-fill pull-right">Enregistrer</button>
+                <button type="button" class="btn btn-info btn-fill pull-right" ng-click="save(group)">Enregistrer</button>
                 <div class="clearfix"></div>
             </form>
         </div>

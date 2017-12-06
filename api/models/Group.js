@@ -1,5 +1,5 @@
 /**
- * Document.js
+ * Group.js
  *
  * @description :: TODO: You might write a short summary of how this model works and what it represents here.
  * @docs        :: http://sailsjs.org/documentation/concepts/models-and-orm/models
@@ -7,45 +7,49 @@
 
 module.exports = {
 
-    tableName: 'col_documents',
+    tableName: 'col_groups',
 
     attributes: {
-
-        'batch': {
-            type: 'integer'
-        },
 
         'name': {
             type: 'string'
         },
 
-        'xml_file': {
+        'abbyy_user': {
             type: 'string'
         },
 
-        'pdf_file': {
+        'abbyy_password': {
             type: 'string'
         },
 
-        'status': {
+        'abbyy_template_1': {
             type: 'string'
         },
 
-        'path': {
+        'abbyy_template_2': {
             type: 'string'
         },
 
-        'process_result': {
-            type: 'longtext'
-        },
-
-        'task_id': {
+        'sp_url': {
             type: 'string'
         },
 
-        /* @assocition */
-        'owner': {
-            model: 'group'
+        'sp_user': {
+            type: 'string'
+        },
+
+        'sp_password': {
+            type: 'string'
+        },
+
+        'batch_process_nb': {
+            type: 'integer'
+        },
+
+        'documents': {
+            collection: 'document',
+            via: 'owner'
         }
 
     }

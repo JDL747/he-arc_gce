@@ -17,11 +17,11 @@ module.exports = {
      * environment (see config/connections.js and config/models.js )           *
      ***************************************************************************/
 
-    // models: {
-    //   connection: 'someMongodbServer'
-    // }
+    baseUrl: 'http://locahost:1337/',
 
     sp_api_url: 'http://86.119.28.188/sites/mediacorp/_api',
+
+    abbyy_api_url: 'https://cloud.ocrsdk.com',
 
     sp_digest_token: ''
 

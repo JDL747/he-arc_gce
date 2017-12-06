@@ -1,59 +1,48 @@
 <div class="col-md-12">
     <div class="card">
         <div class="header">
-            <h4 class="title">Document numérisé</h4>
+            <h4 class="title">Charger les documents</h4>
+        </div>
+        <div class="content">
+            <form novalidate>
+                <div class="row" file-upload>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Charger vos documents</label>
+                            <input type="file" class="form-control" placeholder="Documents à traiter" multiple>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-info btn-fill pull-right" ng-click="upload()">Lancer le traitement</button>
+                <div class="clearfix"></div>
+            </form>
+        </div>
+    </div>
+    <div class="card">
+        <div class="header">
+            <h4 class="title">Documents numérisés</h4>
         </div>
         <div class="content table-responsive table-full-width">
             <table class="table table-hover table-striped">
                 <thead>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Salary</th>
-                    <th>Country</th>
-                    <th>City</th>
+                    <th>Batch</th>
+                    <th>Nom</th>
+                    <th>status</th>
+                    <th>XML</th>
+                    <th>PDF</th>
+                    <th>Action</th>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Dakota Rice</td>
-                        <td>$36,738</td>
-                        <td>Niger</td>
-                        <td>Oud-Turnhout</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Minerva Hooper</td>
-                        <td>$23,789</td>
-                        <td>Curaçao</td>
-                        <td>Sinaai-Waas</td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>Sage Rodriguez</td>
-                        <td>$56,142</td>
-                        <td>Netherlands</td>
-                        <td>Baileux</td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>Philip Chaney</td>
-                        <td>$38,735</td>
-                        <td>Korea, South</td>
-                        <td>Overland Park</td>
-                    </tr>
-                    <tr>
-                        <td>5</td>
-                        <td>Doris Greene</td>
-                        <td>$63,542</td>
-                        <td>Malawi</td>
-                        <td>Feldkirchen in Kärnten</td>
-                    </tr>
-                    <tr>
-                        <td>6</td>
-                        <td>Mason Porter</td>
-                        <td>$78,615</td>
-                        <td>Chile</td>
-                        <td>Gloucester</td>
+                    <tr ng-repeat="doc in documents">
+                        <td>{{ doc.batch }}</td>
+                        <td>{{ doc.name }}</td>
+                        <td>{{ doc.status }}</td>
+                        <td>{{ doc.pdf_file }}</td>
+                        <td>{{ doc.xml_file }}</td>
+                        <td>
+                            <button type="button" class="btn btn-success btn-fill" ng-click="process(doc.id)">LAD</button>
+                            <button type="button" class="btn btn-success btn-fill" ng-click="sendToSP(doc.id)">SP</button>
+                        </td>
                     </tr>
                 </tbody>
             </table>

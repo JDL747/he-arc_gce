@@ -60,7 +60,7 @@ module.exports = {
 
                     if (error) sails.log.error(error);
 
-                    sails.log.info('Upload Success:', opts.fileName);
+                    sails.log.info('Uploaded to Sharepoint Successfully:', opts.fileName);
                     return done(JSON.parse(body));
 
                 });
