@@ -76,6 +76,7 @@ module.exports = {
     },
 
     LADProcess: function(req, res) {
+
         Document.findOne(req.param('id'))
             .then(function(doc) {
 
@@ -101,7 +102,7 @@ module.exports = {
                                         doc.xml_file = parsedResult.response.task[0]['$'].resultUrl;
                                         doc.status = 'Terminer';
                                         doc.save();
-                                        return res.ok();
+                                        return res.json(group);
                                     });
 
                                 }
