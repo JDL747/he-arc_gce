@@ -30,7 +30,7 @@ angular.module('gce-app',
             case 'localhost:1339':
                 $rootScope.baseUrl = 'http://localhost:1339';
                 break;
-            case 'http://92.222.78.33:8082/':
+            case '92.222.78.33:8082':
                 $rootScope.baseUrl = 'http://92.222.78.33:8082';
                 break;
         }
