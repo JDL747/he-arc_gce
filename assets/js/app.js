@@ -24,7 +24,16 @@ angular.module('gce-app',
 
         editableOptions.theme = 'bs3';
 
-        $rootScope.baseUrl = 'http://localhost:1337';
+        $rootScope.baseUrl = 'http://localhost:1339';
+
+        switch(window.location.host) {
+            case 'localhost:1339':
+                $rootScope.baseUrl = 'http://localhost:1339';
+                break;
+            case 'api.flexcrowd.org':
+                $rootScope.baseUrl = 'http://localhost:1339';
+                break;
+        }
 
         $rootScope.$on('$viewContentLoaded', function() {
             $window.scrollTo(0, 0);
@@ -39,8 +48,6 @@ angular.module('gce-app',
 
         $logProvider.debugEnabled(false);
         cfpLoadingBarProvider.includeSpinner = false;
-
-        RestangularProvider.setBaseUrl('http://localhost:1337/');
 
         $stateProvider
             .state('index', {

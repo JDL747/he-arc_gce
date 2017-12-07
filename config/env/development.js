@@ -17,7 +17,9 @@ module.exports = {
      * environment (see config/connections.js and config/models.js )           *
      ***************************************************************************/
 
-    baseUrl: 'http://locahost:1337/',
+    port: process.env.PORT || 1339,
+
+    baseUrl: 'http://locahost:1339/',
 
     sp_api_url: 'http://86.119.28.188/sites/mediacorp/_api',
 
