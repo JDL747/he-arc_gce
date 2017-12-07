@@ -3,12 +3,8 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group">
-                    <label>Groupe</label>
-                    <select>
-                        <option value="">Group 1</option>
-                        <option value="">Group 2</option>
-                        <option value="">Group 3</option>
-                        <option value="">Group 4</option>
+                    <select class="form-control" ng-model="group.id" ng-change="templateChange()">
+                        <option value="{{ group.id }}" ng-repeat="group in groups">{{ group.name }}</option>
                     </select>
                 </div>
             </div>

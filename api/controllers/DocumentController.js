@@ -13,6 +13,13 @@ const base64 = require('base-64');
  */
 module.exports = {
 
+    find: function(req, res) {
+        Document.find({ owner: req.param('owner') })
+            .then(function(documents) {
+                return res.json(documents);
+            });
+    },
+
     OCRProcess: function(req, res) {
         Document.findOne(req.param('id'))
             .then(function(doc) {
@@ -41,14 +48,22 @@ module.exports = {
 
                                 parseString(taskResult, function (err, parsedResult) {
                                     if (parsedResult.response.task[0]['$'].status !== 'Completed') {
-                                        doc.status = 'En traitement';
+                                        doc.status = 'En attente de traitement';
                                     } else if (parsedResult.response.task[0]['$'].status === 'Completed') {
-                                        doc.status = 'Prêt poir la LAD';
+                                        doc.status = 'Prêt pour la LAD';
                                     }
+
                                     doc.result_url = parsedResult.response.task[0]['$'].resultUrl;
-                                    doc.pdf_file = parsedResult.response.task[0]['$'].resultUrl;
-                                    doc.save();
-                                    return res.ok();
+
+                                    let uploadFolder = `assets/uploads/ocr/${group.folder_name}/docs/batch_${group.batch_process_nb}/${doc.name}_ocr.pdf`;
+
+                                    if (parsedResult.response.task[0]['$'].status === 'Completed') {
+                                        request(parsedResult.response.task[0]['$'].resultUrl).pipe(fs.createWriteStream(uploadFolder));
+                                         doc.pdf_file = uploadFolder;
+                                        doc.save();
+                                        return res.ok();
+                                    }
+
                                 });
 
                             });
@@ -104,7 +119,7 @@ module.exports = {
 
         req.file('file').upload({ maxBytes: 100000000 }, function(errUpload, files) {
 
-            Group.findOne('5a280209595d36a8054e1728')
+            Group.findOne(req.param('id'))
                 .then(function(group) {
 
                     if (!group.batch_process_nb) {
@@ -130,7 +145,7 @@ module.exports = {
                                 'batch': group.batch_process_nb,
                                 'name': uploadedFile.filename,
                                 'path': `assets/uploads/ocr/${group.folder_name}/docs/batch_${group.batch_process_nb}/${uploadedFile.filename}`,
-                                'status': 'En attente',
+                                'status': 'Chargement OK',
                                 'owner': group.id
                             }, function(doc) { });
 

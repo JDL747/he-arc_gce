@@ -31,17 +31,6 @@ angular.module('gce-app.controllers')
         $scope.cropperProxy = 'cropper.first';
 
         /**
-         * When there is a cropped image to show encode it to base64 string and
-         * use as a source for an image element.
-         */
-        $scope.preview = function() {
-            if (!file || !data) return;
-            Cropper.crop(file, data).then(Cropper.encode).then(function(dataUrl) {
-                ($scope.preview || ($scope.preview = {})).dataUrl = dataUrl;
-            });
-        };
-
-        /**
          * Use cropper function proxy to call methods of the plugin.
          * See https://github.com/fengyuanchen/cropper#methods
          */
@@ -51,10 +40,11 @@ angular.module('gce-app.controllers')
         };
 
         $scope.scale = function(width) {
-            Cropper.crop(file, data)
-                .then(Cropper.encode).then(function(dataUrl) {
-                    ($scope.preview || ($scope.preview = {})).dataUrl = dataUrl;
-                });
+            $scope.cropZone = $scope.cropper.first('getData');
+            $scope.cropZone.x = Math.round($scope.cropZone.x);
+            $scope.cropZone.y = Math.round($scope.cropZone.y);
+            $scope.cropZone.width = Math.round($scope.cropZone.width);
+            $scope.cropZone.height = Math.round($scope.cropZone.height);
         }
 
         /**
@@ -68,7 +58,6 @@ angular.module('gce-app.controllers')
             autoCrop: false,
             crop: function(dataNew) {
                 data = dataNew;
-                $scope.cropZone = dataNew;
             }
         };
 

@@ -13,7 +13,7 @@
                         </div>
                     </div>
                 </div>
-                <button type="button" class="btn btn-success btn-fill pull-right" ng-click="upload()">Lancer le traitement</button>
+                <button type="button" class="btn btn-success btn-fill pull-right" ng-click="upload()">Charger</button>
                 <div class="clearfix"></div>
             </form>
         </div>
@@ -28,6 +28,7 @@
                 <select class="form-control" ng-model="current_template" ng-change="templateChange()">
                     <option value="template_1.xml">Template 1</option>
                     <option value="template_2.xml">Template 2</option>
+                    <option value="template_3.xml">Template 3</option>
                 </select>
             </div>
         </div>
@@ -46,12 +47,12 @@
                         <td><i class="pe-7s-like2" aria-hidden="true" ng-if="doc.is_operation_completed"></i> {{ doc.batch }}</td>
                         <td><a href="{{ baseUrl }}/{{ doc.path }}" target="_blank">{{ doc.name }}</a></td>
                         <td>{{ doc.status }}</td>
-                        <td><a href="{{ doc.pdf_file }}" target="_blank"><i class="fa fa-file-pdf-o" aria-hidden="true" ng-if="doc.pdf_file"></i></a></td>
+                        <td><a href="{{ baseUrl }}/{{ doc.pdf_file }}" target="_blank"><i class="fa fa-file-pdf-o" aria-hidden="true" ng-if="doc.pdf_file"></i></a></td>
                         <td><a href="{{ doc.xml_file }}" target="_blank"><i class="fa fa-file-code-o" aria-hidden="true" ng-if="doc.xml_file"></i></a></td>
                         <td>
-                            <button type="button" class="btn btn-success btn-fill" ng-click="process(doc.id)" ng-if="doc.status === doc.status === 'En attente' || doc.status === 'En traitement'">Traiter</button>
+                            <button type="button" class="btn btn-success btn-fill" ng-click="process(doc.id)">OCR</button>
                             <button type="button" class="btn btn-success btn-fill" ng-click="processLad(doc.id)">LAD</button>
-                            <button type="button" class="btn btn-success btn-fill" ng-click="sendToSP(doc.id)">SP</button>
+                            <!--<button type="button" class="btn btn-success btn-fill" ng-click="sendToSP(doc.id)">SP</button>-->
                         </td>
                     </tr>
                 </tbody>

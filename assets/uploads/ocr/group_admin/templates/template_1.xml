@@ -1,16 +1,16 @@
 <document xmlns="http://ocrsdk.com/schema/taskDescription-1.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ocrsdk.com/schema/taskDescription-1.0.xsd http://ocrsdk.com/schema/taskDescription-1.0.xsd">
 
-	<fieldTemplates></fieldTemplates>	
+	<fieldTemplates></fieldTemplates>
 
 	<page applyTo="0">
 
-		<text id="date" left="224" top="1100" right="527" bottom="1136">
+		<text id="package_title" left="601" top="1178" right="1184" bottom="1295">
 	         <language>English</language>
 	         <textType>normal</textType>
 	         <oneTextLine>true</oneTextLine>
 	   	</text>
 
-	   	<text id="product_name" left="572" top="1332" right="757" bottom="1422">
+	   	<text id="market" left="1550" top="1415" right="1901" bottom="1499">
 	         <language>English</language>
 	         <textType>normal</textType>
 	         <oneTextLine>true</oneTextLine>

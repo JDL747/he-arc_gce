@@ -31,6 +31,10 @@ module.exports = {
             type: 'string'
         },
 
+        'abbyy_template_3': {
+            type: 'string'
+        },
+
         'current_template': {
             type: 'string'
         },

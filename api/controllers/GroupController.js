@@ -13,10 +13,10 @@ module.exports = {
 
         req.file('file').upload({ maxBytes: 100000000 }, function(errUpload, files) {
 
-            Group.findOne('5a280209595d36a8054e1728')
+            Group.findOne(req.param('id'))
                 .then(function(group) {
 
-                    let templates = ['abbyy_template_1', 'abbyy_template_2'];
+                    let templates = ['abbyy_template_1', 'abbyy_template_2', 'abbyy_template_3'];
 
                     async.each(files, function (uploadedFile, callback) {
 
