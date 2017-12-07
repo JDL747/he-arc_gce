@@ -154,9 +154,10 @@ module.exports = {
 
                     });
 
+                    return res.json(group);
+
                 });
 
-                return res.json([]);
         });
     },
 
