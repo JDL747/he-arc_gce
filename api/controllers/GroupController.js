@@ -32,7 +32,7 @@ module.exports = {
                         callback();
 
                     });
-
+                    return res.ok();
             });
 
         });
