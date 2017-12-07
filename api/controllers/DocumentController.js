@@ -59,9 +59,8 @@ module.exports = {
 
                                     if (parsedResult.response.task[0]['$'].status === 'Completed') {
                                         request(parsedResult.response.task[0]['$'].resultUrl).pipe(fs.createWriteStream(uploadFolder));
-                                         doc.pdf_file = uploadFolder;
+                                        doc.pdf_file = uploadFolder;
                                         doc.save();
-                                        return res.ok();
                                     }
 
                                 });
@@ -70,9 +69,9 @@ module.exports = {
 
                         });
 
-                        return res.json(group);
-
                     });
+
+                return res.json(doc);
 
             });
     },
@@ -104,7 +103,6 @@ module.exports = {
                                         doc.xml_file = parsedResult.response.task[0]['$'].resultUrl;
                                         doc.status = 'Terminer';
                                         doc.save();
-                                        return res.json(group);
                                     });
 
                                 }
@@ -114,6 +112,7 @@ module.exports = {
                         });
 
                     });
+                return res.json(group);
 
             });
     },
@@ -150,13 +149,13 @@ module.exports = {
                                 'path': `assets/uploads/ocr/${group.folder_name}/docs/batch_${group.batch_process_nb}/${uploadedFile.filename}`,
                                 'status': 'Chargement OK',
                                 'owner': group.id
-                            }, function(doc) { });
+                            }, function(doc) {
+                                return res.json(group);
+                            });
 
                         });
 
                     });
-
-                    return res.json(group);
 
                 });
 
@@ -203,33 +202,6 @@ module.exports = {
                     });
             });
 
-    },
-
-    _apiCall: function(req, res) {
-
-        SPService.refreshFormDigestToken({}, function() {
-
-            let url = sails.config.sp_api_url + "/Web/GetFolderByServerRelativeUrl('/sites/mediacorp/Sony Entertainment')/Files";
-
-            let urlAddFolder = sails.config.sp_api_url + "/Web/Folders/add('/sites/mediacorp/Sony Entertainment/Test')";
-
-            let options = {
-                url: urlAddFolder,
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json;odata=verbose',
-                    'Content-Type': 'application/json;odata=verbose',
-                    'Authorization': 'Basic aGVhcmMuc2hhcmVwb2ludFxBZG1pbmlzdHJhdG9yOjk4Ny5zaGFyZXBvaW50',
-                    'X-RequestDigest': sails.config.sp_digest_token,
-                }
-            };
-
-            request(options, function (error, response, body) {
-                if (error) sails.log.error(error);
-                return res.json(JSON.parse(body))
-            });
-
-        });
     }
 
 };
