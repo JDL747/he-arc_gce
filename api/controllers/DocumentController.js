@@ -70,6 +70,8 @@ module.exports = {
 
                         });
 
+                        return res.json(group);
+
                     });
 
             });
