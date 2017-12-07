@@ -54,14 +54,14 @@
                 <div class="row" file-upload>
                     <div class="col-md-12">
                         <div class="form-group">
-                            <label>Template 1</label>
-                            <input type="file" class="form-control" placeholder="Template 1" ng-model="groupe.abbyy_template_1">
+                            <label>Template 1 ({{ group.abbyy_template_1 }})</label>
+                            <input type="file" class="form-control" placeholder="Template 1" ng-model="group.abbyy_template_1">
                         </div>
                     </div>
                     <div class="col-md-12">
                         <div class="form-group">
-                            <label>Template 2</label>
-                            <input type="file" class="form-control" placeholder="Template 2" ng-model="groupe.abbyy_template_2">
+                            <label>Template 2 ({{ group.abbyy_template_2 }})</label>
+                            <input type="file" class="form-control" placeholder="Template 2" ng-model="group.abbyy_template_2">
                         </div>
                     </div>
                 </div>
@@ -78,10 +78,16 @@
         <div class="content">
             <form novalidate>
                 <div class="row">
-                     <div class="col-md-12">
+                    <div class="col-md-12">
                         <div class="form-group">
-                            <label>Url</label>
+                            <label>Url de l'API</label>
                             <input type="text" class="form-control" placeholder="Url" ng-model="group.sp_url">
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Nom de la librairie</label>
+                            <input type="text" class="form-control" placeholder="Url" ng-model="group.sp_document_library_name">
                         </div>
                     </div>
                     <div class="col-md-12">

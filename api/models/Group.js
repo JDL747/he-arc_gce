@@ -31,11 +31,19 @@ module.exports = {
             type: 'string'
         },
 
+        'current_template': {
+            type: 'string'
+        },
+
         'sp_url': {
             type: 'string'
         },
 
         'sp_user': {
+            type: 'string'
+        },
+
+        'sp_document_library_name': {
             type: 'string'
         },
 

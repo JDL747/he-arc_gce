@@ -8,7 +8,7 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <label>Images à repérer</label>
-                        <input type="file" onchange="angular.element(this).scope().onFile(this.files[0])">
+                        <input type="file" class="form-control" onchange="angular.element(this).scope().onFile(this.files[0])">
                     </div>
                     <div ng-if="dataUrl">
                         <button class="btn btn-info btn-fill" ng-click="scale()">Coordonnées de la zone</button>

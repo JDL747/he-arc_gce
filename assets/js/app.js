@@ -59,11 +59,11 @@ angular.module('gce-app',
                 templateUrl: '/templates/zoning.html',
                 controller: 'ZoningCtrl',
             })
-            .state('index.operations', {
+            /*.state('index.operations', {
                 url: '/operations',
                 templateUrl: '/templates/operations.html',
                 controller: 'IndexCtrl',
-            })
+            })*/
             .state('index.settings', {
                 url: '/settings',
                 templateUrl: '/templates/settings.html',

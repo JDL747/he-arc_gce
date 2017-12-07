@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const chokidar = require('chokidar');
 const parseString = require('xml2js').parseString;
+const base64 = require('base-64');
 
 /**
  * DocumentController
@@ -22,7 +23,9 @@ module.exports = {
                         let cridentials = {
                             'username': group.abbyy_user,
                             'password': group.abbyy_password,
-                            'documentPath': doc.path
+                            'current_template': group.current_template,
+                            'documentPath': doc.path,
+                            'folder_name': group.folder_name
                         };
 
                         ABBYYService.submitImage(cridentials, function(results) {
@@ -30,10 +33,65 @@ module.exports = {
                             parseString(results, function (err, result) {
                                 doc.process_result = results;
                                 doc.task_id = result.response.task[0]['$'].id;
+                                cridentials['task_id'] = doc.task_id;
                                 doc.save();
                             });
 
-                            return res.ok();
+                            ABBYYService.getTaskStatus(cridentials, function(taskResult) {
+
+                                parseString(taskResult, function (err, parsedResult) {
+                                    if (parsedResult.response.task[0]['$'].status !== 'Completed') {
+                                        doc.status = 'En traitement';
+                                    } else if (parsedResult.response.task[0]['$'].status === 'Completed') {
+                                        doc.status = 'Prêt poir la LAD';
+                                    }
+                                    doc.result_url = parsedResult.response.task[0]['$'].resultUrl;
+                                    doc.pdf_file = parsedResult.response.task[0]['$'].resultUrl;
+                                    doc.save();
+                                    return res.ok();
+                                });
+
+                            });
+
+                        });
+
+                    });
+
+            });
+    },
+
+    LADProcess: function(req, res) {
+        Document.findOne(req.param('id'))
+            .then(function(doc) {
+
+                Group.findOne(doc.owner)
+                    .then(function(group) {
+
+                        let cridentials = {
+                            'username': group.abbyy_user,
+                            'password': group.abbyy_password,
+                            'current_template': group.current_template,
+                            'documentPath': doc.path,
+                            'folder_name': group.folder_name,
+                            'task_id': doc.task_id
+                        };
+
+                        ABBYYService.getTaskStatus(cridentials, function(taskResult) {
+
+                            parseString(taskResult, function (err, parsedResult) {
+
+                                if (parsedResult.response.task[0]['$'].status === 'Completed') {
+
+                                    ABBYYService.processFields(cridentials, function(fieldsResult) {
+                                        doc.xml_file = parsedResult.response.task[0]['$'].resultUrl;
+                                        doc.status = 'Terminer';
+                                        doc.save();
+                                        return res.ok();
+                                    });
+
+                                }
+
+                            });
 
                         });
 
@@ -72,7 +130,7 @@ module.exports = {
                                 'batch': group.batch_process_nb,
                                 'name': uploadedFile.filename,
                                 'path': `assets/uploads/ocr/${group.folder_name}/docs/batch_${group.batch_process_nb}/${uploadedFile.filename}`,
-                                'status': 'processing',
+                                'status': 'En attente',
                                 'owner': group.id
                             }, function(doc) { });
 
@@ -86,69 +144,45 @@ module.exports = {
         });
     },
 
-    _upload: function(req, res) {
+    uploadToSP: function(req, res) {
 
-        SPService.RefreshFormDigestToken({}, function() {
+        Document.findOne(req.param('id'))
+            .then(function(doc) {
 
-            let filePath = path.join(__dirname, '../../assets/uploads', 'Type_1.pdf');
+                Group.findOne(doc.owner)
+                    .then(function(group) {
 
-            fs.readFile(filePath, 'utf8', function(err, data) {
+                        SPService.refreshFormDigestToken({}, function() {
 
-                let uploadUrl = sails.config.sp_api_url + "/Web/lists/getByTitle(@TargetLibrary)/RootFolder/files/add(url=@TargetFileName, overwrite='true')?" +
-                    "@TargetLibrary='Sony Entertainment'" + "&@TargetFileName='Type_1.pdf'";
+                            fs.readFile(doc.pdf_file, 'utf8', function(err, data) {
 
-                let options = {
-                    url: uploadUrl,
-                    method: 'POST',
-                    body: data,
-                    headers: {
-                        'Accept': 'application/json;odata=verbose',
-                        'Content-Type': 'application/json;odata=verbose',
-                        'Authorization': 'Basic aGVhcmMuc2hhcmVwb2ludFxBZG1pbmlzdHJhdG9yOjk4Ny5zaGFyZXBvaW50',
-                        'X-RequestDigest': sails.config.sp_digest_token,
-                    }
-                };
+                                let uploadUrl = `${group.sp_url}/Web/lists/getByTitle(@TargetLibrary)/RootFolder/files/add(url=@TargetFileName, overwrite='true')?@TargetLibrary='${group.sp_document_library_name}'&@TargetFileName='${doc.name}'`;
 
-                request(options, function (error, response, body) {
+                                let options = {
+                                    url: uploadUrl,
+                                    method: 'POST',
+                                    body: data,
+                                    headers: {
+                                        'Accept': 'application/json;odata=verbose',
+                                        'Content-Type': 'application/json;odata=verbose',
+                                        'Authorization': 'Basic ' + base64.encode(group.sp_user + ':' + group.sp_password),
+                                        'X-RequestDigest': sails.config.sp_digest_token,
+                                    }
+                                };
 
-                    if (error) sails.log.error(error);
+                                request(options, function (error, response, body) {
+                                    if (error) sails.log.error(error);
+                                    sails.log.info(body);
+                                    doc.is_operation_completed = true;
+                                    doc.save();
+                                    return res.json(JSON.parse(body));
+                                });
 
-                    return res.json(JSON.parse(body));
+                            });
 
-                    /*let filedRelUrl = JSON.parse(body).d.ServerRelativeUrl;
-                    let uploadUrl = sails.config.sp_api_url + "/Web/GetFileByServerRelativeUrl('" + filedRelUrl + "')/ListItemAllFields/Product Name";
-
-                    sails.log.debug(uploadUrl);
-
-                    let options = {
-                        url: uploadUrl,
-                        method: 'POST',
-                        body: JSON.stringify({
-                            '__metadata': {
-                                'type': 'SP.Product_x0020_Name0'
-                            },
-                            'Product Name': 'Hello Work'
-                        }),
-                        headers: {
-                            'Accept': 'application/json;odata=verbose',
-                            'Content-Type': 'application/json;odata=verbose',
-                            'Authorization': 'Basic aGVhcmMuc2hhcmVwb2ludFxBZG1pbmlzdHJhdG9yOjk4Ny5zaGFyZXBvaW50',
-                            'X-RequestDigest': sails.config.sp_digest_token,
-                            'X-Http-Method': 'PATCH',
-                            'If-Match': '*'
-                        }
-                    };
-
-                    request(options, function (error, response, body) {
-                        if (error) sails.log.error(error);
-                        return res.json(JSON.parse(body));
-                    });*/
-
-                });
-
+                        });
+                    });
             });
-
-        });
 
     },
 

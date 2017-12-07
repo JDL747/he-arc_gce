@@ -20,7 +20,6 @@ var cssFilesToInject = [
     'styles/**/*.css'
 ];
 
-
 // Client-side javascript files to inject in order
 // (uses Grunt-style wildcard/glob/splat expressions)
 var jsFilesToInject = [
@@ -35,7 +34,7 @@ var jsFilesToInject = [
     // will be injected here in no particular order.
     // 'js/**/*.js',
     'js/controllers/IndexCtrl.js',
-    'js/controllers/SettingCtrl.js',
+    'js/controllers/SettingsCtrl.js',
     'js/controllers/ZoningCtrl.js',
     'js/controllers/DocumentCtrl.js',
     'js/directives/CommonDirective.js',
@@ -43,7 +42,6 @@ var jsFilesToInject = [
     'js/services/GCEService.js',
     'js/app.js',
 ];
-
 
 // Client-side HTML templates are injected using the sources below
 // The ordering of these templates shouldn't matter.
@@ -55,7 +53,6 @@ var jsFilesToInject = [
 // templates get spit out to the same file.  Be sure and check out `tasks/README.md`
 // for information on customizing and installing new tasks.
 var templateFilesToInject = [];
-
 
 // Default path for public folder (see documentation for more information)
 var tmpPath = '.tmp/public/';

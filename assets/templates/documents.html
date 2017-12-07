@@ -1,7 +1,7 @@
 <div class="col-md-12">
     <div class="card">
         <div class="header">
-            <h4 class="title">Charger les documents</h4>
+            <h4 class="title">Chargement de documents</h4>
         </div>
         <div class="content">
             <form novalidate>
@@ -13,7 +13,7 @@
                         </div>
                     </div>
                 </div>
-                <button type="button" class="btn btn-info btn-fill pull-right" ng-click="upload()">Lancer le traitement</button>
+                <button type="button" class="btn btn-success btn-fill pull-right" ng-click="upload()">Lancer le traitement</button>
                 <div class="clearfix"></div>
             </form>
         </div>
@@ -22,25 +22,35 @@
         <div class="header">
             <h4 class="title">Documents numérisés</h4>
         </div>
+        <div class="col-md-4 pull-right">
+            <div class="form-group">
+                <label>Template en utilisation</label>
+                <select class="form-control" ng-model="current_template" ng-change="templateChange()">
+                    <option value="template_1.xml">Template 1</option>
+                    <option value="template_2.xml">Template 2</option>
+                </select>
+            </div>
+        </div>
         <div class="content table-responsive table-full-width">
             <table class="table table-hover table-striped">
                 <thead>
                     <th>Batch</th>
                     <th>Nom</th>
                     <th>status</th>
-                    <th>XML</th>
                     <th>PDF</th>
+                    <th>XML</th>
                     <th>Action</th>
                 </thead>
                 <tbody>
                     <tr ng-repeat="doc in documents">
-                        <td>{{ doc.batch }}</td>
-                        <td>{{ doc.name }}</td>
+                        <td><i class="pe-7s-like2" aria-hidden="true" ng-if="doc.is_operation_completed"></i> {{ doc.batch }}</td>
+                        <td><a href="{{ baseUrl }}/{{ doc.path }}" target="_blank">{{ doc.name }}</a></td>
                         <td>{{ doc.status }}</td>
-                        <td>{{ doc.pdf_file }}</td>
-                        <td>{{ doc.xml_file }}</td>
+                        <td><a href="{{ doc.pdf_file }}" target="_blank"><i class="fa fa-file-pdf-o" aria-hidden="true" ng-if="doc.pdf_file"></i></a></td>
+                        <td><a href="{{ doc.xml_file }}" target="_blank"><i class="fa fa-file-code-o" aria-hidden="true" ng-if="doc.xml_file"></i></a></td>
                         <td>
-                            <button type="button" class="btn btn-success btn-fill" ng-click="process(doc.id)">LAD</button>
+                            <button type="button" class="btn btn-success btn-fill" ng-click="process(doc.id)" ng-if="doc.status === doc.status === 'En attente' || doc.status === 'En traitement'">Traiter</button>
+                            <button type="button" class="btn btn-success btn-fill" ng-click="processLad(doc.id)">LAD</button>
                             <button type="button" class="btn btn-success btn-fill" ng-click="sendToSP(doc.id)">SP</button>
                         </td>
                     </tr>

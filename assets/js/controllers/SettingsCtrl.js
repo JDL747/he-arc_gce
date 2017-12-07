@@ -23,18 +23,17 @@ angular.module('gce-app.controllers')
         $scope.save = function(group) {
             $http.put($rootScope.baseUrl + '/group/5a280209595d36a8054e1728', group)
                 .then(function(response) {
-
+                    $state.go($state.current, {}, { reload: true });
                 }, function(response) {});
         };
 
         $scope.saveTemplates = function(templates) {
-
             $http.post($rootScope.baseUrl + '/group/uploadTemplates', formData, {
                     'transformRequest': angular.identity,
                     'headers': { 'Content-Type': undefined }
                 })
                 .then(function(response) {
-
+                    $state.go($state.current, {}, { reload: true });
                 }, function(response) {});
         };
 

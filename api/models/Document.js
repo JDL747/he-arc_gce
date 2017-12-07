@@ -43,6 +43,15 @@ module.exports = {
             type: 'string'
         },
 
+        'result_url': {
+            type: 'string'
+        },
+
+        'is_operation_completed': {
+            type: 'boolean',
+            defaultsTo : false
+        },
+
         /* @assocition */
         'owner': {
             model: 'group'
