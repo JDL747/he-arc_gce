@@ -1,6 +1,7 @@
 let request = require('request');
 const path = require('path');
 const fs = require('fs');
+const base64 = require('base-64');
 
 /**
  * Sharepoint Services
@@ -8,67 +9,79 @@ const fs = require('fs');
  */
 module.exports = {
 
-
     /**
-     * Refresg Form Digest Token
+     * Refresh Form Digest Token
      * @param {[type]}   opts options parameteres
      * @param {Function} done Callback
      */
     refreshFormDigestToken: function(opts, done) {
 
         let options = {
-            url: sails.config.sp_api_url + '/contextinfo',
+            url: opts.sp_url + '/contextinfo',
             method: 'POST',
             headers: {
                 'Accept': 'application/json;odata=verbose',
                 'Content-Type': 'application/json;odata=verbose',
-                'Authorization': 'Basic aGVhcmMuc2hhcmVwb2ludFxBZG1pbmlzdHJhdG9yOjk4Ny5zaGFyZXBvaW50'
+                'Authorization': `Basic ${base64.encode(opts.sp_user + ':' + opts.sp_password)}`
             }
         };
 
         request(options, function(error, response, body) {
             if (error) sails.log.error(error);
-            sails.config.sp_digest_token = JSON.parse(body).d.GetContextWebInformation.FormDigestValue
-            return done();
+            let formDigestToken = JSON.parse(body).d.GetContextWebInformation.FormDigestValue
+            return done(formDigestToken);
         });
 
     },
 
-    uploadDocument: function(opts, done) {
+    updateFileMetaData: function(opts, done) {
 
-        SPService.refreshFormDigestToken({}, function() {
+        let options = {
+            url: opts.sp_url + '/contextinfo',
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json;odata=verbose',
+                'Content-Type': 'application/json;odata=verbose',
+                'Authorization': `Basic ${base64.encode(opts.sp_user + ':' + opts.sp_password)}`
+            }
+        };
 
-            let filePath = path.join(__dirname, '../../assets/uploads', opts.fileName);
+        request(options, function(error, response, body) {
+            if (error) sails.log.error(error);
+            let formDigestToken = JSON.parse(body).d.GetContextWebInformation.FormDigestValue
+            return done(formDigestToken);
+        });
 
-            fs.readFile(filePath, 'utf8', function(err, data) {
-
-                let uploadUrl = `${sails.config.sp_api_url}/Web/lists/getByTitle(@TargetLibrary)/RootFolder/files/add(url=@TargetFileName, overwrite='true')?@TargetLibrary='Sony Entertainment'&@TargetFileName='${opts.fileName}'`;
-
-                let options = {
-                    url: uploadUrl,
-                    method: 'POST',
-                    body: data,
-                    headers: {
-                        'Accept': 'application/json;odata=verbose',
-                        'Content-Type': 'application/json;odata=verbose',
-                        'Authorization': 'Basic aGVhcmMuc2hhcmVwb2ludFxBZG1pbmlzdHJhdG9yOjk4Ny5zaGFyZXBvaW50',
-                        'X-RequestDigest': sails.config.sp_digest_token,
-                    }
-                };
-
-                request(options, function (error, response, body) {
-
-                    if (error) sails.log.error(error);
-
-                    sails.log.info('Uploaded to Sharepoint Successfully:', opts.fileName);
-                    return done(JSON.parse(body));
-
-                });
-
-            });
+        this._getFileInfoFromSP(function() {
 
         });
 
+        // let url = opts.sp_url + "/_api/Web/Lists/getByTitle('Project Documents')/Items(" + item.Id + ")";
+
+        /*let options = {
+            url: url,
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json;odata=verbose',
+                'Content-Type': 'application/json;odata=verbose',
+                'Authorization': `Basic ${base64.encode(opts.sp_user + ':' + opts.sp_password)}`
+            }
+        };
+
+        request(options, function(error, response, body) {
+            if (error) sails.log.error(error);
+            let formDigestToken = JSON.parse(body).d.GetContextWebInformation.FormDigestValue
+            return done(formDigestToken);
+        });*/
+
+    },
+
+    _getFileInfoFromSP: function(opts, done) {
+        console.log('_getFileInfoFromSP')
+    },
+
+    _processXML: function(opts, done) {
+        console.log('_processXML')
     }
 
 }

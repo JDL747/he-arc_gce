@@ -13,18 +13,6 @@ const path = require('path');
  */
 module.exports.bootstrap = function(cb) {
 
-    let watcher = chokidar.watch(path.join(__dirname, '../assets/uploads/processed_docs'), {
-        'ignored': /(^|[\/\\])\../,
-        'persistent': true,
-        'ignoreInitial': true
-    });
-
-    watcher.on('add', filePath => {
-        let fileName = path.basename(filePath);
-        sails.log.info(`File ${fileName} has been added`);
-        SPService.uploadDocument({'fileName': fileName }, function() {});
-    });
-
     cb();
 
 };

@@ -43,7 +43,7 @@
                     <th>Statut</th>
                     <th>PDF</th>
                     <th>XML</th>
-                    <th>Action</th>
+                    <th class="text-center">Action</th>
                 </thead>
                 <tbody>
                     <tr ng-repeat="doc in documents">
@@ -52,11 +52,11 @@
                         <td>{{ doc.status }}</td>
                         <td><a href="{{ baseUrl }}/{{ doc.pdf_file }}" target="_blank"><i class="fa fa-file-pdf-o" aria-hidden="true" ng-if="doc.pdf_file"></i></a></td>
                         <td><a href="{{ doc.xml_file }}" target="_blank"><i class="fa fa-file-code-o" aria-hidden="true" ng-if="doc.xml_file"></i></a></td>
-                        <td>
+                        <td class="text-center">
                             <button type="button" class="btn btn-success btn-fill" ng-click="ocrProcess(doc.id)">OCR</button>
                             <button type="button" class="btn btn-success btn-fill" ng-click="ladProcess(doc.id)">LAD</button>
-                            <button type="button" class="btn btn-danger btn-fill" ng-click="deleteDoc(doc.id)">Supprimer</button>
-                            <!--<button type="button" class="btn btn-success btn-fill" ng-click="sendToSP(doc.id)">SP</button>-->
+                            <button type="button" class="btn btn-success btn-fill" ng-click="sendToSP(doc.id)">SP</button>
+                            <button type="button" class="btn btn-danger btn-fill" ng-click="deleteDoc(doc.id)"><i class="pe-7s-trash" aria-hidden="true"></i></button>
                         </td>
                     </tr>
                 </tbody>

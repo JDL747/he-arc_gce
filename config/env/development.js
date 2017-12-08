@@ -21,10 +21,4 @@ module.exports = {
 
     baseUrl: 'http://locahost:1339/',
 
-    sp_api_url: 'http://86.119.28.188/sites/mediacorp/_api',
-
-    abbyy_api_url: 'https://cloud.ocrsdk.com',
-
-    sp_digest_token: ''
-
 };

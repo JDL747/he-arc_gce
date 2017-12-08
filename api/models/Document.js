@@ -52,6 +52,10 @@ module.exports = {
             defaultsTo : false
         },
 
+        'sp_document_id': {
+             type: 'string'
+        },
+
         /* @assocition */
         'owner': {
             model: 'group'

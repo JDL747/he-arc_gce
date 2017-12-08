@@ -204,7 +204,7 @@ module.exports = {
     },
 
     /**
-     * Upload document to sharepoint
+     * Upload document to SharePoint
      * @param  {[type]} req [description]
      * @param  {[type]} res [description]
      * @return {[type]}     [description]
@@ -216,31 +216,36 @@ module.exports = {
 
                 let group = req.session.group;
 
-                return SPService.refreshFormDigestToken({}, function() {
+                return SPService.refreshFormDigestToken(group, function(formDigestToken) {
 
-                    fs.readFile(doc.pdf_file, 'utf8', function(err, data) {
+                    let docName = (doc.name).replace('.tif', '.pdf'),
+                        uploadUrl = `${group.sp_url}/Web/lists/getByTitle(@TargetLibrary)/RootFolder/files/add(url=@TargetFileName, overwrite='true')?@TargetLibrary='${group.sp_document_library_name}'&@TargetFileName='${docName}'`,
+                        filePath = path.join(__dirname, `../../assets/${doc.pdf_file}`);
 
-                        let uploadUrl = `${group.sp_url}/Web/lists/getByTitle(@TargetLibrary)/RootFolder/files/add(url=@TargetFileName, overwrite='true')?@TargetLibrary='${group.sp_document_library_name}'&@TargetFileName='${doc.name}'`;
+                    let options = {
+                        url: uploadUrl,
+                        method: 'POST',
+                        formData: { 'file': fs.createReadStream(filePath) },
+                        headers: {
+                            'Accept': 'application/json;odata=verbose',
+                            'Content-Type': 'application/json;odata=verbose',
+                            'Authorization': `Basic ${base64.encode(group.sp_user + ':' + group.sp_password)}`,
+                            'X-RequestDigest': formDigestToken,
+                        }
+                    };
 
-                        let options = {
-                            url: uploadUrl,
-                            method: 'POST',
-                            body: data,
-                            headers: {
-                                'Accept': 'application/json;odata=verbose',
-                                'Content-Type': 'application/json;odata=verbose',
-                                'Authorization': 'Basic ' + base64.encode(group.sp_user + ':' + group.sp_password),
-                                'X-RequestDigest': sails.config.sp_digest_token,
-                            }
-                        };
+                    request(options, function (error, response, body) {
+                        if (error) return res.badRequest();
 
-                        request(options, function (error, response, body) {
-                            if (error) sails.log.error(error);
-                            sails.log.info(body);
-                            doc.is_operation_completed = true;
-                            doc.save();
-                            return res.json(JSON.parse(body));
+                        doc.is_operation_completed = true;
+                        doc.sp_document_id = JSON.parse(body).d.__metadata.id;
+                        doc.save();
+
+                        SPService.updateFileMetaData({}, function() {
+
                         });
+
+                        return res.json(JSON.parse(body));
 
                     });
 
