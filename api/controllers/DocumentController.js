@@ -194,10 +194,8 @@ module.exports = {
                         });
 
                     }, function(err) {
-                        return group.save();
+                        return res.ok();
                     });
-
-                    return res.ok();
 
                 });
 
