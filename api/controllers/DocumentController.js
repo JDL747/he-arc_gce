@@ -58,7 +58,8 @@ module.exports = {
 
                 ABBYYService.getTaskStatus(cridentials, function(taskResult) {
 
-                    let uploadFolder = `assets/uploads/ocr/${group.folder_name}/docs/batch_${group.batch_process_nb}/${doc.id}_ocr.pdf`;
+                    let documentPath = `uploads/ocr/${group.folder_name}/docs/batch_${group.batch_process_nb}/${doc.id}_ocr.pdf`;
+                    let uploadFolder = `assets/${documentPath}`;
 
                     parseString(taskResult, function (err, parsedResult) {
 
@@ -67,7 +68,7 @@ module.exports = {
 
                         if (parsedResult.response.task[0]['$'].status === 'Completed') {
                             request(parsedResult.response.task[0]['$'].resultUrl).pipe(fs.createWriteStream(uploadFolder));
-                            doc.pdf_file = uploadFolder;
+                            doc.pdf_file = documentPath;
                             doc.save();
                         }
 
@@ -106,7 +107,8 @@ module.exports = {
 
                         if (parsedResult.response.task[0]['$'].status === 'Completed') {
 
-                            let uploadFolder = `assets/uploads/ocr/${group.folder_name}/docs/batch_${group.batch_process_nb}/${doc.id}_ocr.xml`;
+                            let documentPath = `uploads/ocr/${group.folder_name}/docs/batch_${group.batch_process_nb}/${doc.id}_ocr.xml`;
+                            let uploadFolder = `assets/${documentPath}`;
 
                             ABBYYService.processFields(cridentials, function(fieldsResult) {
 
@@ -114,7 +116,7 @@ module.exports = {
 
                                 request(parsedResult.response.task[0]['$'].resultUrl).pipe(fs.createWriteStream(uploadFolder));
 
-                                doc.xml_file = parsedResult.response.task[0]['$'].resultUrl;
+                                doc.xml_file = documentPath;
                                 doc.status = 'Terminer';
                                 doc.save();
 
@@ -163,11 +165,10 @@ module.exports = {
 
                         fs.rename(uploadedFile.fd, uploadFolder, function(err) {
                             if (err) return sails.log.error(err);
-
                             Document.create({
                                 'batch': group.batch_process_nb,
                                 'name': uploadedFile.filename,
-                                'path': `assets/uploads/ocr/${group.folder_name}/docs/batch_${group.batch_process_nb}/${uploadedFile.filename}`,
+                                'path': `uploads/ocr/${group.folder_name}/docs/batch_${group.batch_process_nb}/${uploadedFile.filename}`,
                                 'owner': group.id
                             }).then(function(doc) {
 
@@ -175,7 +176,7 @@ module.exports = {
                                     'username': group.abbyy_user,
                                     'password': group.abbyy_password,
                                     'current_template': group.current_template,
-                                    'documentPath': doc.path,
+                                    'documentPath': 'assets/' + doc.path,
                                     'folder_name': group.folder_name
                                 };
 
