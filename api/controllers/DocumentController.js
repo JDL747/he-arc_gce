@@ -140,7 +140,7 @@ module.exports = {
 
         req.file('file').upload({ 'maxBytes': 100000000 }, function(errUpload, files) {
 
-            Group.findOne(req.param('id'))
+            return Group.findOne(req.param('id'))
                 .then(function(group) {
 
                     if (!group.batch_process_nb) {
