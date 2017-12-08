@@ -15,7 +15,8 @@
     "angular-sanitize": "1.6.6",
     "angular-confirm": "angular1-confirm#^1.1.0",
     "ng-cropper": "^0.4.1",
-    "ngToast": "ngtoast#^2.0.0"
+    "ngToast": "ngtoast#^2.0.0",
+    "cropperjs": "^1.1.3"
   },
   "ignore": [
     "**/.*",

@@ -2,8 +2,8 @@
 
 angular.module('gce-app.controllers')
 
-.controller('ZoningCtrl', ['$scope', '$state', '$timeout', 'Restangular', 'Cropper',
-    function($scope, $state, $timeout, Restangular, Cropper) {
+.controller('ZoningCtrl', ['$scope', '$state', '$timeout', 'Cropper',
+    function($scope, $state, $timeout, Cropper) {
 
         var file, data;
 
