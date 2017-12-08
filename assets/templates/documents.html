@@ -4,12 +4,15 @@
             <h4 class="title">Chargement de documents</h4>
         </div>
         <div class="content">
-            <form name="uploadForm" file-upload novalidate>
+            <div class="alert alert-danger" ng-show="showNotification">
+                <span><b> Attention - </b> Veuillez vérifier la configuration ABBY sous paramètres avant de traiter des documents</span>
+            </div>
+            <form name="uploadForm" file-upload novalidate ng-show="!showNotification">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
                             <label>Charger vos documents</label>
-                            <input type="file" class="form-control" placeholder="Documents à traiter" ng-model="files" required multiple>
+                            <input type="file" class="form-control" placeholder="Documents à traiter" accept="image/tif" required multiple>
                         </div>
                     </div>
                 </div>

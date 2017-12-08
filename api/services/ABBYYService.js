@@ -36,7 +36,7 @@ module.exports = {
         };
 
         request(options, function(error, response, body) {
-            if (error) sails.log.error(error);
+            if (error) return done(error);
             return done(body);
         });
     },

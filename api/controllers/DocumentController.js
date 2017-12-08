@@ -21,9 +21,20 @@ module.exports = {
      */
     find: function(req, res) {
         Document.find({ 'owner': req.param('owner') })
-            .populate('owner', { 'select': ['current_template'] })
             .then(function(documents) {
-                return res.json(documents);
+                Group.findOne(req.session.group.id)
+                    .then(function(group) {
+                        return res.json(
+                            {
+                                documents: documents,
+                                group: {
+                                    'current_template': group.current_template,
+                                    'abbyy_user':  group.abbyy_user
+                                }
+                            }
+                        );
+                    })
+
             });
     },
 

@@ -6,6 +6,7 @@ angular.module('gce-app.controllers')
     function($rootScope, $scope, $state, $http, $window, $ngConfirm, ngToast) {
 
         $scope.groupId = $window.localStorage.getItem('groupId');
+        $scope.showNotification = false;
 
         let formData = new FormData();
         let contentArray = [];
@@ -13,9 +14,10 @@ angular.module('gce-app.controllers')
         if ($scope.groupId !== null) {
             $http.get($rootScope.baseUrl + '/document?owner=' + $scope.groupId)
                 .then(function(response) {
-                    $scope.documents = response.data;
-                    if (response.data.length > 0) {
-                        $scope.current_template = response.data[0].owner.current_template;
+                    $scope.documents = response.data.documents;
+                    $scope.current_template = response.data.group.current_template;
+                    if (!response.data.group.abbyy_user || response.data.group.abbyy_user === '') {
+                        $scope.showNotification = true;
                     }
                 }, function(response) {});
         }
