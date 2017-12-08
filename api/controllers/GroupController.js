@@ -9,6 +9,26 @@ const fs = require('fs');
  */
 module.exports = {
 
+    /**
+     * Update group info
+     * @param  {[type]} req [description]
+     * @param  {[type]} res [description]
+     * @return {[type]}     [description]
+     */
+    update: function(req, res) {
+        Group.update(req.body.id, req.body)
+            .then(function(group) {
+                req.session.group = group;
+                return res.ok();
+            });
+    },
+
+    /**
+     * Set group session
+     * @param  {[type]} req [description]
+     * @param  {[type]} res [description]
+     * @return {[type]}     [description]
+     */
     session: function(req, res) {
         Group.findOne(req.param('id'))
             .then(function(group) {
