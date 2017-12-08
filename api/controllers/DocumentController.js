@@ -22,7 +22,7 @@ module.exports = {
     find: function(req, res) {
         Document.find({ 'owner': req.param('owner') })
             .then(function(documents) {
-                Group.findOne(req.session.group.id)
+                return Group.findOne(req.session.group.id)
                     .then(function(group) {
                         return res.json(
                             {
@@ -33,8 +33,7 @@ module.exports = {
                                 }
                             }
                         );
-                    })
-
+                    });
             });
     },
 
@@ -101,7 +100,7 @@ module.exports = {
                     'task_id': doc.task_id
                 };
 
-                ABBYYService.getTaskStatus(cridentials, function(taskResult) {
+                return ABBYYService.getTaskStatus(cridentials, function(taskResult) {
 
                     parseString(taskResult, function (err, parsedResult) {
 
@@ -217,7 +216,7 @@ module.exports = {
 
                 let group = req.session.group;
 
-                SPService.refreshFormDigestToken({}, function() {
+                return SPService.refreshFormDigestToken({}, function() {
 
                     fs.readFile(doc.pdf_file, 'utf8', function(err, data) {
 
