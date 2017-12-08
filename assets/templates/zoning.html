@@ -12,7 +12,7 @@
                     </div>
                     <div ng-if="dataUrl">
                         <button class="btn btn-info btn-fill" ng-click="scale()">Coordonnées de la zone</button>
-                        <button class="btn btn-info btn-fill" ng-click="clear()">Clear selection</button>
+                        <button class="btn btn-info btn-fill" ng-click="clear()">Supprimer la séléction</button>
                         <div>
                             <xmp style="font-weight: bold;">
                                 <text id="field_id" left="{{ cropZone.x }}" top="{{ cropZone.y }}" right="{{ (cropZone.x + cropZone.width ) }}" bottom="{{ (cropZone.y + cropZone.height) }}">

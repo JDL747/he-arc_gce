@@ -15,10 +15,11 @@ angular.module('gce-app.directives', [])
             input.trigger('fileselect', [numFiles, label]);
 
             for (var i = 0; i < files.length; i++) {
-                scope.$emit('fileSelected', {
-                    'file': files[i]
-                });
+                scope.$emit('fileSelected', { 'file': files[i] });
             }
+
+            jQuery('button', element).prop('disabled', false);
+
         });
 
     }

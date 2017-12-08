@@ -13,7 +13,7 @@
                         </div>
                     </div>
                 </div>
-                <button type="button" class="btn btn-info btn-fill pull-right" ng-click="save(group)">Enregistrer</button>
+                <button type="button" class="btn btn-success btn-fill pull-right" ng-click="save(group)">Enregistrer</button>
                 <div class="clearfix"></div>
             </form>
         </div>
@@ -39,7 +39,7 @@
                         </div>
                     </div>
                 </div>
-                <button type="button" class="btn btn-info btn-fill pull-right" ng-click="save(group)">Enregistrer</button>
+                <button type="button" class="btn btn-success btn-fill pull-right" ng-click="save(group)">Enregistrer</button>
                 <div class="clearfix"></div>
             </form>
         </div>
@@ -54,24 +54,24 @@
                 <div class="row" file-upload>
                     <div class="col-md-12">
                         <div class="form-group">
-                            <label>Template 1 ({{ group.abbyy_template_1 }})</label>
-                            <input type="file" class="form-control" placeholder="Template 1" ng-model="group.abbyy_template_1">
+                            <label>Template 1 ({{ group.abbyy_template_1 }}) | <span class="text-info">Le fichier doit être nommé <code style="text-transform: lowercase;">template_3.xml</code></span></label>
+                            <input type="file" class="form-control" placeholder="Le fichier doit être nommé template_1.xml" ng-model="group.abbyy_template_1">
                         </div>
                     </div>
                     <div class="col-md-12">
                         <div class="form-group">
-                            <label>Template 2 ({{ group.abbyy_template_2 }})</label>
-                            <input type="file" class="form-control" placeholder="Template 2" ng-model="group.abbyy_template_2">
+                            <label>Template 2 ({{ group.abbyy_template_2 }}) | <span class="text-info">Le fichier doit être nommé <code style="text-transform: lowercase;">template_2.xml</code></span></label>
+                            <input type="file" class="form-control" placeholder="Le fichier doit être nommé template_2.xml" ng-model="group.abbyy_template_2">
                         </div>
                     </div>
                     <div class="col-md-12">
                         <div class="form-group">
-                            <label>Template 3 ({{ group.abbyy_template_3 }})</label>
-                            <input type="file" class="form-control" placeholder="Template 3" ng-model="group.abbyy_template_3">
+                            <label>Template 3 ({{ group.abbyy_template_3 }}) | <span class="text-info">Le fichier doit être nommé <code style="text-transform: lowercase;">template_3.xml</code></span></label>
+                            <input type="file" class="form-control" placeholder="" ng-model="group.abbyy_template_3">
                         </div>
                     </div>
                 </div>
-                <button type="button" class="btn btn-info btn-fill pull-right" ng-click="saveTemplates(group)">Enregistrer</button>
+                <button type="button" class="btn btn-success btn-fill pull-right" ng-click="saveTemplates(group)">Enregistrer</button>
                 <div class="clearfix"></div>
             </form>
         </div>
@@ -109,7 +109,7 @@
                         </div>
                     </div>
                 </div>
-                <button type="button" class="btn btn-info btn-fill pull-right" ng-click="save(group)">Enregistrer</button>
+                <button type="button" class="btn btn-success btn-fill pull-right" ng-click="save(group)">Enregistrer</button>
                 <div class="clearfix"></div>
             </form>
         </div>

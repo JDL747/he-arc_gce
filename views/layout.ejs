@@ -34,6 +34,7 @@
     <link rel="stylesheet" href="/bower_components/ng-cropper/dist/ngCropper.all.min.css">
     <link rel="stylesheet" href="/bower_components/angular-confirm/css/angular-confirm.css">
     <link rel="stylesheet" href="/bower_components/angular-loading-bar/build/loading-bar.css">
+    <link rel="stylesheet" href="/bower_components/ngToast/dist/ngToast.min.css">
 
     <!--STYLES-->
     <link rel="stylesheet" href="/styles/admin/animate.min.css">
@@ -46,8 +47,8 @@
   </head>
 
   <body ng-app="gce-app">
-
-     <ui-view></ui-view>
+    <toast></toast>
+    <ui-view></ui-view>
 
     <!--
         Client-side Templates
@@ -107,15 +108,11 @@
     <script type="text/javascript" src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
     <script type="text/javascript" src="/bower_components/angular-ui-router/release/angular-ui-router.js"></script>
-    <script type="text/javascript" src="/bower_components/lodash/dist/lodash.min.js"></script>
-    <script type="text/javascript" src="/bower_components/restangular/dist/restangular.js"></script>
-    <script type="text/javascript" src="/bower_components/angular-xeditable/dist/js/xeditable.js"></script>
-    <script type="text/javascript" src="/bower_components/angular-smart-table/dist/smart-table.min.js"></script>
     <script type="text/javascript" src="/bower_components/angular-loading-bar/src/loading-bar.js"></script>
-    <script type="text/javascript" src="/bower_components/AngularJS-Toaster/toaster.min.js"></script>
     <script type="text/javascript" src="/bower_components/angular-confirm/js/angular-confirm.js"></script>
     <script type="text/javascript" src="/bower_components/ng-cropper/dist/cropper.js"></script>
     <script type="text/javascript" src="/bower_components/ng-cropper/dist/ngCropper.all.js"></script>
+    <script type="text/javascript" src="/bower_components/ngToast/dist/ngToast.min.js"></script>
 
     <!--SCRIPTS-->
     <script src="/js/dependencies/sails.io.js"></script>

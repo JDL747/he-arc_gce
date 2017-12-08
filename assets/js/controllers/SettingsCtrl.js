@@ -2,8 +2,8 @@
 
 angular.module('gce-app.controllers')
 
-.controller('SettingsCtrl', ['$scope', '$rootScope', '$state', '$window', '$http',
-    function($scope, $rootScope, $state, $window, $http) {
+.controller('SettingsCtrl', ['$scope', '$rootScope', '$state', '$window', '$http', 'ngToast',
+    function($scope, $rootScope, $state, $window, $http, ngToast) {
 
         let formData = new FormData();
         let contentArray = [];
@@ -25,6 +25,7 @@ angular.module('gce-app.controllers')
         $scope.save = function(group) {
             $http.put($rootScope.baseUrl + '/group/' + $scope.groupId, group)
                 .then(function(response) {
+                    ngToast.create('Enregistrement des paramètres effectué avec succès');
                     $state.go($state.current, {}, { reload: true });
                 }, function(response) {});
         };
@@ -35,6 +36,7 @@ angular.module('gce-app.controllers')
                     'headers': { 'Content-Type': undefined }
                 })
                 .then(function(response) {
+                    ngToast.create('Enregistrement du template effectué avec succès');
                     $state.go($state.current, {}, { reload: true });
                 }, function(response) {});
         };

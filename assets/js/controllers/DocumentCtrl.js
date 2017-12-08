@@ -2,24 +2,23 @@
 
 angular.module('gce-app.controllers')
 
-.controller('DocumentCtrl', ['$rootScope', '$scope', '$state', '$http', '$ngConfirm', '$window',
-    function($rootScope, $scope, $state, $http, $ngConfirm, $window) {
+.controller('DocumentCtrl', ['$rootScope', '$scope', '$state', '$http', '$window', '$ngConfirm', 'ngToast',
+    function($rootScope, $scope, $state, $http, $window, $ngConfirm, ngToast) {
 
         $scope.groupId = $window.localStorage.getItem('groupId');
 
         let formData = new FormData();
         let contentArray = [];
 
-        $http.get($rootScope.baseUrl + '/document?owner=' + $scope.groupId)
-            .then(function(response) {
-                $scope.documents = response.data;
-            },function(response) {});
-
-
-        $http.get($rootScope.baseUrl + '/group/' + $scope.groupId)
-            .then(function(response) {
-                $scope.current_template = response.data.current_template;
-            },function(response) {});
+        if ($scope.groupId !== null) {
+            $http.get($rootScope.baseUrl + '/document?owner=' + $scope.groupId)
+                .then(function(response) {
+                    $scope.documents = response.data;
+                    if (response.data.length > 0) {
+                        $scope.current_template = response.data[0].owner.current_template;
+                    }
+                }, function(response) {});
+        }
 
         $scope.$on('fileSelected', function(event, args) {
             $scope.$apply(function() {
@@ -34,34 +33,83 @@ angular.module('gce-app.controllers')
                 }, function(response) {});
         };
 
+        /**
+         * Documents upload
+         */
         $scope.upload = function() {
             $http.post($rootScope.baseUrl + '/document/upload/' + $scope.groupId, formData, {
                     'transformRequest': angular.identity,
                     'headers': { 'Content-Type': undefined }
                 }).then(function(response) {
+                    ngToast.create('Chargement effectué avec succès');
                     $state.go($state.current, {}, { reload: true });
                 }, function(response) {});
         };
 
-        $scope.process = function(id) {
+        /**
+         * Process OCR on selected document
+         * @param {string} id Document ID
+         */
+        $scope.ocrProcess = function(id) {
             $http.get($rootScope.baseUrl + '/document/ocrprocess/' + id)
                 .then(function(response) {
+                    ngToast.create('Océrisation effectué avec succès');
                     $state.go($state.current, {}, { reload: true });
-                },function(response) {});
+                }, function(response) {});
         };
 
+        /**
+         * Process LAD on selected document
+         * @param {string} id Document ID
+         */
+        $scope.ladProcess = function(id) {
+            $http.get($rootScope.baseUrl + '/document/ladprocess/' + id)
+                .then(function(response) {
+                    ngToast.create('LAD effectué avec succès');
+                    $state.go($state.current, {}, { reload: true });
+                }, function(response) {
+                    ngToast.create({'content': 'Erreur de traitement ! <br> Assurez-vous d\'avoir bien télécharger un template', 'className': 'danger' });
+                });
+        };
+
+        /**
+         * Upload the specified document to SharePoint
+         * @param {string} id Document ID
+         */
         $scope.sendToSP = function(id) {
             $http.get($rootScope.baseUrl + '/document/uploadToSP/' + id)
                 .then(function(response) {
+                    ngToast.create('L\'envoi vers Sharepoint effectué avec succès');
                     $state.go($state.current, {}, { reload: true });
-                },function(response) {});
+                }, function(response) {});
         };
 
-        $scope.processLad = function(id) {
-            $http.get($rootScope.baseUrl + '/document/ladprocess/' + id)
-                .then(function(response) {
-                    $state.go($state.current, {}, { reload: true });
-                },function(response) {});
+        /**
+         * Delete a specified document
+         * @param {string} id Document ID
+         */
+        $scope.deleteDoc = function(id) {
+            $ngConfirm({
+                columnClass: 'small',
+                title: 'Suppression de document',
+                content: 'Êtes-vous sûr de vouloir supprimer ce document ?',
+                scope: $scope,
+                buttons: {
+                    delete: {
+                        text: 'Supprimer',
+                        btnClass: 'btn-red',
+                        action: function(scope) {
+                            $http.delete($rootScope.baseUrl + '/document/' + id)
+                                .then(function(response) {
+                                    ngToast.create('Document supprimé avec succes');
+                                    $state.go($state.current, {}, { reload: true });
+                                },function(response) {});
+                        }
+                    },
+                    'Fermer': function() {}
+                }
+            });
+
         };
 
     }

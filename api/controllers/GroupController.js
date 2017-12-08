@@ -9,9 +9,23 @@ const fs = require('fs');
  */
 module.exports = {
 
+    session: function(req, res) {
+        Group.findOne(req.param('id'))
+            .then(function(group) {
+                req.session.group = group;
+                return res.ok();
+            });
+    },
+
+    /**
+     * Upload XML templates for fields recognition
+     * @param  {[type]} req [description]
+     * @param  {[type]} res [description]
+     * @return {[type]}     [description]
+     */
     uploadTemplates: function(req, res) {
 
-        req.file('file').upload({ maxBytes: 100000000 }, function(errUpload, files) {
+        req.file('file').upload({ 'maxBytes': 100000000 }, function(errUpload, files) {
 
             Group.findOne(req.param('id'))
                 .then(function(group) {
@@ -20,9 +34,9 @@ module.exports = {
 
                     async.each(files, function (uploadedFile, callback) {
 
-                        let uploadFolder = path.join(__dirname, `../../assets/uploads/ocr/${group.folder_name}/templates/${uploadedFile.filename}`);
+                        let templatePath = path.join(__dirname, `../../assets/uploads/ocr/${group.folder_name}/templates/${uploadedFile.filename}`);
 
-                        fs.rename(uploadedFile.fd, uploadFolder, function(err) {
+                        fs.rename(uploadedFile.fd, templatePath, function(err) {
                             if (err) return sails.log.error(err);
                             group[templates[files.indexOf(uploadedFile)]] = `${group.folder_name}/templates/${uploadedFile.filename}`;
                             group.save();

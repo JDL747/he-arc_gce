@@ -17,10 +17,6 @@ module.exports = {
      * environment (see config/connections.js and config/models.js )           *
      ***************************************************************************/
 
-    cors: {
-        origin: '*'
-    },
-
     port: process.env.PORT || 1339,
 
     baseUrl: 'http://locahost:1339/',

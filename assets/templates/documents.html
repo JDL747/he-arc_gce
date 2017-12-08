@@ -4,16 +4,16 @@
             <h4 class="title">Chargement de documents</h4>
         </div>
         <div class="content">
-            <form novalidate>
-                <div class="row" file-upload>
+            <form name="uploadForm" file-upload novalidate>
+                <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
                             <label>Charger vos documents</label>
-                            <input type="file" class="form-control" placeholder="Documents à traiter" multiple>
+                            <input type="file" class="form-control" placeholder="Documents à traiter" ng-model="files" required multiple>
                         </div>
                     </div>
                 </div>
-                <button type="button" class="btn btn-success btn-fill pull-right" ng-click="upload()">Charger</button>
+                <button type="button" class="btn btn-success btn-fill pull-right" ng-disabled="uploadForm.$invalid" ng-click="upload()">Charger</button>
                 <div class="clearfix"></div>
             </form>
         </div>
@@ -37,7 +37,7 @@
                 <thead>
                     <th>Batch</th>
                     <th>Nom</th>
-                    <th>status</th>
+                    <th>Statut</th>
                     <th>PDF</th>
                     <th>XML</th>
                     <th>Action</th>
@@ -50,8 +50,9 @@
                         <td><a href="{{ baseUrl }}/{{ doc.pdf_file }}" target="_blank"><i class="fa fa-file-pdf-o" aria-hidden="true" ng-if="doc.pdf_file"></i></a></td>
                         <td><a href="{{ doc.xml_file }}" target="_blank"><i class="fa fa-file-code-o" aria-hidden="true" ng-if="doc.xml_file"></i></a></td>
                         <td>
-                            <button type="button" class="btn btn-success btn-fill" ng-click="process(doc.id)">OCR</button>
-                            <button type="button" class="btn btn-success btn-fill" ng-click="processLad(doc.id)">LAD</button>
+                            <button type="button" class="btn btn-success btn-fill" ng-click="ocrProcess(doc.id)">OCR</button>
+                            <button type="button" class="btn btn-success btn-fill" ng-click="ladProcess(doc.id)">LAD</button>
+                            <button type="button" class="btn btn-danger btn-fill" ng-click="deleteDoc(doc.id)">Supprimer</button>
                             <!--<button type="button" class="btn btn-success btn-fill" ng-click="sendToSP(doc.id)">SP</button>-->
                         </td>
                     </tr>

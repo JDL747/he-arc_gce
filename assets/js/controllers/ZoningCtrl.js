@@ -2,10 +2,20 @@
 
 angular.module('gce-app.controllers')
 
-.controller('ZoningCtrl', ['$scope', '$state', '$timeout', 'Restangular', '$http', 'Cropper',
-    function($scope, $state, $timeout, Restangular, $http, Cropper) {
+.controller('ZoningCtrl', ['$scope', '$state', '$timeout', 'Restangular', 'Cropper',
+    function($scope, $state, $timeout, Restangular, Cropper) {
 
         var file, data;
+
+        /**
+         * Croppers container object should be created in controller's scope
+         * for updates by directive via prototypal inheritance.
+         * Pass a full proxy name to the `ng-cropper-proxy` directive attribute to
+         * enable proxing.
+         */
+        $scope.cropper = {};
+        $scope.cropperProxy = 'cropper.first';
+
 
         /**
          * Method is called every time file input's value changes.
@@ -17,18 +27,8 @@ angular.module('gce-app.controllers')
             Cropper.encode((file = blob)).then(function(dataUrl) {
                 $scope.dataUrl = dataUrl;
                 $timeout(showCropper); // wait for $digest to set image's src
-
             });
         };
-
-        /**
-         * Croppers container object should be created in controller's scope
-         * for updates by directive via prototypal inheritance.
-         * Pass a full proxy name to the `ng-cropper-proxy` directive attribute to
-         * enable proxing.
-         */
-        $scope.cropper = {};
-        $scope.cropperProxy = 'cropper.first';
 
         /**
          * Use cropper function proxy to call methods of the plugin.

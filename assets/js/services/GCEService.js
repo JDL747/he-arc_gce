@@ -2,11 +2,7 @@
 
 angular.module('gce-app.services', [])
 
-    .service('GCEService', ['Restangular', '$q',
-        function (Restangular, $q) {
+.service('GCEService', ['Restangular', '$q',
+    function (Restangular, $q) { return {} }
 
-            return {}
-
-        }
-
-    ]);
+]);

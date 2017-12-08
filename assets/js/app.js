@@ -4,29 +4,24 @@ angular.module('gce-app',
     [
         'ngAnimate',
         'ngSanitize',
-        'restangular',
-        'xeditable',
-        'smart-table',
+        'ngCropper',
+        'ngToast',
         'ui.router',
-        'toaster',
         'angular-loading-bar',
         'ui.bootstrap',
         'cp.ngConfirm',
-        'ngCropper',
         'gce-app.directives',
         'gce-app.filters',
         'gce-app.controllers',
         'gce-app.services'
     ])
 
-.run(['$rootScope', '$window', 'editableOptions',
-    function($rootScope, $window, editableOptions) {
-
-        editableOptions.theme = 'bs3';
+.run(['$rootScope', '$window',
+    function($rootScope, $window) {
 
         $rootScope.baseUrl = 'http://localhost:1339';
 
-        switch(window.location.host) {
+        switch($window.location.host) {
             case 'localhost:1339':
                 $rootScope.baseUrl = 'http://localhost:1339';
                 break;
@@ -43,8 +38,8 @@ angular.module('gce-app',
 
  ])
 
-.config(['$stateProvider', '$urlRouterProvider', '$logProvider', 'RestangularProvider', 'cfpLoadingBarProvider',
-    function($stateProvider, $urlRouterProvider, $logProvider, RestangularProvider, cfpLoadingBarProvider) {
+.config(['$stateProvider', '$urlRouterProvider', '$logProvider', 'cfpLoadingBarProvider',
+    function($stateProvider, $urlRouterProvider, $logProvider, cfpLoadingBarProvider) {
 
         $logProvider.debugEnabled(false);
         cfpLoadingBarProvider.includeSpinner = false;
