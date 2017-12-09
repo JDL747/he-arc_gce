@@ -62,17 +62,11 @@ module.exports = {
                     'X-Http-Method': 'MERGE'
                 }
             };
-
-            console.log(options)
-
             request(options, function(error, response, body) {
                 if (error) sails.log.error(error);
-
                 console.log(error)
                 console.log(body)
-
                 return done();
-
             });
 
         });

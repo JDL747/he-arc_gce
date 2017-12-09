@@ -180,7 +180,6 @@ module.exports = {
                                 };
 
                                 ABBYYService.submitImage(cridentials, function(results) {
-                                    console.log(results)
                                     parseString(results, function (err, result) {
                                         doc.process_result = results;
                                         doc.task_id = result.response.task[0]['$'].id;
