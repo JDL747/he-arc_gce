@@ -19,8 +19,6 @@ angular.module('gce-app',
 .run(['$rootScope', '$window',
     function($rootScope, $window) {
 
-        $rootScope.baseUrl = 'http://localhost:1339';
-
         switch($window.location.host) {
             case 'localhost:1339':
                 $rootScope.baseUrl = 'http://localhost:1339';
@@ -61,11 +59,6 @@ angular.module('gce-app',
                 templateUrl: '/templates/zoning.html',
                 controller: 'ZoningCtrl',
             })
-            /*.state('index.operations', {
-                url: '/operations',
-                templateUrl: '/templates/operations.html',
-                controller: 'IndexCtrl',
-            })*/
             .state('index.settings', {
                 url: '/settings',
                 templateUrl: '/templates/settings.html',

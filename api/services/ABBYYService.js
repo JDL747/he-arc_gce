@@ -1,6 +1,6 @@
-const request = require('request');
 const path = require('path');
 const fs = require('fs');
+const request = require('request');
 const base64 = require('base-64');
 
 /**
@@ -89,7 +89,6 @@ module.exports = {
             if (error) return done(error);
             return done(body);
         });
-
 
     }
 

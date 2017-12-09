@@ -72,6 +72,7 @@ module.exports.session = {
      ***************************************************************************/
     adapter: 'mongo',
     url: 'mongodb://localhost:27017/gce-db', // user, password and port optional
+    collection: 'col_sessions'
 
     /***************************************************************************
      *                                                                          *

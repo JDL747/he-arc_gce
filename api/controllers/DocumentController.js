@@ -1,7 +1,6 @@
-const request = require('request');
 const fs = require('fs');
 const path = require('path');
-const chokidar = require('chokidar');
+const request = require('request');
 const parseString = require('xml2js').parseString;
 const base64 = require('base-64');
 
@@ -181,6 +180,7 @@ module.exports = {
                                 };
 
                                 ABBYYService.submitImage(cridentials, function(results) {
+                                    console.log(results)
                                     parseString(results, function (err, result) {
                                         doc.process_result = results;
                                         doc.task_id = result.response.task[0]['$'].id;
@@ -237,11 +237,18 @@ module.exports = {
                     request(options, function (error, response, body) {
                         if (error) return res.badRequest();
 
+                        let opts = {
+                            'doc': doc,
+                            'group': group,
+                            'formDigestToken': formDigestToken
+                        };
+
                         doc.is_operation_completed = true;
                         doc.sp_document_id = JSON.parse(body).d.__metadata.id;
+                        doc.sp_list_item_all_fields = JSON.parse(body).d.ListItemAllFields.__deferred.uri;
                         doc.save();
 
-                        SPService.updateFileMetaData({}, function() {
+                        SPService.updateFileMetaData(opts, function() {
 
                         });
 

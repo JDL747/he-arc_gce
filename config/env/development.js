@@ -17,6 +17,8 @@ module.exports = {
      * environment (see config/connections.js and config/models.js )           *
      ***************************************************************************/
 
+    abbyy_api_url: 'https://cloud.ocrsdk.com',
+
     port: process.env.PORT || 1339,
 
     baseUrl: 'http://locahost:1339/',

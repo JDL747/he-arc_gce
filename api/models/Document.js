@@ -56,6 +56,10 @@ module.exports = {
              type: 'string'
         },
 
+        'sp_list_item_all_fields': {
+             type: 'string'
+        },
+
         /* @assocition */
         'owner': {
             model: 'group'
