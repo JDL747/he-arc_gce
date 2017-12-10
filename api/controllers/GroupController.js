@@ -10,6 +10,22 @@ const fs = require('fs');
 module.exports = {
 
     /**
+     * Find group based on it's ID
+     * @param  {[type]} req [description]
+     * @param  {[type]} res [description]
+     * @return {[type]}     [description]
+     */
+    findOne: function(req, res) {
+        Group.findOne(req.param('id'))
+            .then(function(group) {
+                if (!req.session.group) {
+                    req.session.group = group;
+                }
+                return res.json(group);
+            });
+    },
+
+    /**
      * Update group info
      * @param  {[type]} req [description]
      * @param  {[type]} res [description]
@@ -33,7 +49,7 @@ module.exports = {
         Group.findOne(req.param('id'))
             .then(function(group) {
                 req.session.group = group;
-                return res.ok();
+                return res.json({ groupName: group.name });
             });
     },
 

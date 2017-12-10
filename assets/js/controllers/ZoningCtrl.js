@@ -2,8 +2,8 @@
 
 angular.module('gce-app.controllers')
 
-.controller('ZoningCtrl', ['$scope', '$state', '$timeout', 'Cropper',
-    function($scope, $state, $timeout, Cropper) {
+.controller('ZoningCtrl', ['$scope', '$state', '$timeout', '$window', 'Cropper',
+    function($scope, $state, $timeout, $window, Cropper) {
 
         var file, data;
 
@@ -15,7 +15,6 @@ angular.module('gce-app.controllers')
          */
         $scope.cropper = {};
         $scope.cropperProxy = 'cropper.first';
-
 
         /**
          * Method is called every time file input's value changes.

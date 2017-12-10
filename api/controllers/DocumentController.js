@@ -21,6 +21,7 @@ module.exports = {
     find: function(req, res) {
         Document.find({ 'owner': req.param('owner') })
             .then(function(documents) {
+                if (!req.session.group) return res.serverError();
                 return Group.findOne(req.session.group.id)
                     .then(function(group) {
                         return res.json(
@@ -235,7 +236,6 @@ module.exports = {
 
                     request(options, function (error, response, body) {
                         if (error) return res.badRequest();
-
                         let opts = {
                             'doc': doc,
                             'group': group,

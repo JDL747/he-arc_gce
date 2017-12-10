@@ -19,7 +19,10 @@ angular.module('gce-app.controllers')
                     if (!response.data.group.abbyy_user || response.data.group.abbyy_user === '') {
                         $scope.showNotification = true;
                     }
-                }, function(response) {});
+                }, function(response) {
+                    $window.localStorage.clear();
+                    $state.go($state.current, {}, { reload: true });
+                });
         }
 
         $scope.$on('fileSelected', function(event, args) {

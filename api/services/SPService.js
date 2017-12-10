@@ -11,8 +11,6 @@ module.exports = {
 
     /**
      * Refresh Form Digest Token
-     * @param {[type]}   opts options parameteres
-     * @param {Function} done Callback
      */
     refreshFormDigestToken: function(opts, done) {
 
@@ -36,9 +34,6 @@ module.exports = {
 
     /**
      * Update uploaded file metadata
-     * @param  {[type]}   opts [description]
-     * @param  {Function} done [description]
-     * @return {[type]}        [description]
      */
     updateFileMetaData: function(opts, done) {
 
@@ -51,7 +46,8 @@ module.exports = {
                 method: 'POST',
                 body: JSON.stringify({
                     '__metadata': { type: fileInfo.type },
-                    'Product_x0020_Name0': 'Hello'
+                    fileInfo.xmlContent,
+                    'ContentTypeId': fileInfo.contentType
                 }),
                 headers: {
                     'Accept': 'application/json;odata=verbose',
@@ -62,10 +58,9 @@ module.exports = {
                     'X-Http-Method': 'MERGE'
                 }
             };
+
             request(options, function(error, response, body) {
                 if (error) sails.log.error(error);
-                console.log(error)
-                console.log(body)
                 return done();
             });
 
@@ -75,9 +70,6 @@ module.exports = {
 
     /**
      * Get file info for the uploaded file
-     * @param  {[type]}   opts [description]
-     * @param  {Function} done callback function
-     * @return {[type]}        [description]
      */
     _getFileInfoFromSP: function(opts, done) {
 
@@ -87,21 +79,25 @@ module.exports = {
             headers: {
                 'Accept': 'application/json;odata=verbose',
                 'Content-Type': 'application/json;odata=verbose',
+                'X-RequestDigest': opts.formDigestToken,
                 'Authorization': `Basic ${base64.encode(opts.group.sp_user + ':' + opts.group.sp_password)}`
             }
         };
 
-        request(options, function(error, response, body) {
-            if (error) sails.log.error(error);
+        this._getContentTypes(opts, function(currentContentType) {
 
-            let result = JSON.parse(body).d;
-            let fileInfo = {
-                'item_id': result.Id,
-                'type': result.__metadata.type,
-                'etag': result.__metadata.etag
-            };
-
-            return done(fileInfo);
+            request(options, function(error, response, body) {
+                if (error) sails.log.error(error);
+                let result = JSON.parse(body).d;
+                let fileInfo = {
+                    'item_id': result.Id,
+                    'type': result.__metadata.type,
+                    'etag': result.__metadata.etag,
+                    'contentType': currentContentType,
+                    'xmlContent': { 'Company1': 'Time to test' }
+                };
+                return done(fileInfo);
+            });
 
         });
 
@@ -109,6 +105,51 @@ module.exports = {
 
     _processXML: function(opts, done) {
         console.log('_processXML')
+    },
+
+    /**
+     * Get content type based on group current template
+     */
+    _getContentTypes: function(opts, done) {
+
+        let url = `${opts.group.sp_url}/Web/Lists/getByTitle('${opts.group.sp_document_library_name}')/contenttypes`;
+
+        let options = {
+            url: url,
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json;odata=verbose',
+                'Content-Type': 'application/json;odata=verbose',
+                'X-RequestDigest': opts.formDigestToken,
+                'Authorization': `Basic ${base64.encode(opts.group.sp_user + ':' + opts.group.sp_password)}`
+            }
+        };
+
+        request(options, function(error, response, body) {
+            if (error) sails.log.error(error);
+
+            let contentTypes = [];
+            let results = JSON.parse(body).d.results;
+
+            results.forEach(function(item, index) {
+               if (item.Group === 'Types de contenu personnalisés') {
+                    let contentType = { 'name': item.Name, 'description': item.Description , 'id': item.StringId };
+                    contentTypes.push(contentType);
+               }
+            });
+
+            Group.update(opts.group.id, { 'sp_library_content_type': contentTypes })
+                .then(function(group) {
+                    if (group.current_template === 'template_1.xml') {
+                        return done(group[0].sp_library_content_type[0].id);
+                    } else if (group[0].current_template === 'template_2.xml') {
+                        return done(group[0].sp_library_content_type[1].id);
+                    } else if (group[0].current_template === 'template_3.xml') {
+                        return done(group[0].sp_library_content_type[2].id);
+                    }
+                });
+
+        });
     }
 
 }

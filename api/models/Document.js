@@ -60,6 +60,10 @@ module.exports = {
              type: 'string'
         },
 
+        'sp_content_type_id': {
+             type: 'string'
+        },
+
         /* @assocition */
         'owner': {
             model: 'group'

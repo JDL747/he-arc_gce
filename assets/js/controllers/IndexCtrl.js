@@ -5,13 +5,15 @@ angular.module('gce-app.controllers', [])
 .controller('IndexCtrl', ['$scope', '$state', '$window', '$rootScope', '$http', '$ngConfirm',
     function($scope, $state, $window, $rootScope, $http, $ngConfirm) {
 
+        $scope.groupName = $window.localStorage.getItem('groupName');
+
 
         if ($window.localStorage.getItem('groupId') === null) {
 
             $http.get($rootScope.baseUrl + '/group')
                 .then(function(response) {
                     $scope.groups = response.data;
-                },function(response) {});
+                });
 
             $ngConfirm({
                 columnClass: 'large',
@@ -26,9 +28,10 @@ angular.module('gce-app.controllers', [])
                             $window.localStorage.setItem('groupId', scope.group.id);
                             $http.get($rootScope.baseUrl + '/group/session/' + scope.group.id)
                                 .then(function(response) {
-                                    $scope.groups = response.data;
-                                }, function(response) {});
-                            $state.go($state.current, {}, { reload: true });
+                                    $scope.group = response.data;
+                                    $window.localStorage.setItem('groupName', response.data.groupName);
+                                    $state.go($state.current, {}, { reload: true });
+                                });
                         }
                     }
                 }

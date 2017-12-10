@@ -13,8 +13,7 @@ angular.module('gce-app.controllers')
         $http.get($rootScope.baseUrl + '/group/' + $scope.groupId)
             .then(function(response) {
                 $scope.group = response.data;
-            },
-            function(response) {});
+            });
 
         $scope.$on('fileSelected', function(event, args) {
             $scope.$apply(function() {

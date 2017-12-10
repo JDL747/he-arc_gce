@@ -51,6 +51,10 @@ module.exports = {
             type: 'string'
         },
 
+        'sp_library_content_type': {
+            type: 'array'
+        },
+
         'sp_password': {
             type: 'string'
         },
