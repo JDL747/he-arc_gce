@@ -23,7 +23,7 @@ module.exports = {
         Document.find({ 'owner': req.param('owner') })
             .then(function(documents) {
                 if (!req.session.group) return res.serverError();
-                Group.findOne(req.session.group.id)
+                return Group.findOne(req.session.group.id)
                     .then(function(group) {
                         return res.json(
                             {
