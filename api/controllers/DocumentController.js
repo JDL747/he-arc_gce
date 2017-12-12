@@ -152,7 +152,7 @@ module.exports = {
 
         req.file('file').upload({ 'maxBytes': 100000000 }, function(errUpload, files) {
 
-            Group.findOne(req.param('id'))
+            return Group.findOne(req.param('id'))
                 .then(function(group) {
 
                     if (!group.batch_process_nb) {
@@ -160,7 +160,6 @@ module.exports = {
                     }
 
                     group.batch_process_nb = group.batch_process_nb + 1;
-                    group.save();
 
                     req.session.group = group;
 
@@ -206,6 +205,7 @@ module.exports = {
                         });
 
                     }, function(err) {
+                        group.save();
                         return res.ok();
                     });
 
