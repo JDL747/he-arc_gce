@@ -3,6 +3,7 @@ const path = require('path');
 const request = require('request');
 const parseString = require('xml2js').parseString;
 const base64 = require('base-64');
+const fetch = require('node-fetch');
 
 /**
  * DocumentController
@@ -22,7 +23,7 @@ module.exports = {
         Document.find({ 'owner': req.param('owner') })
             .then(function(documents) {
                 if (!req.session.group) return res.serverError();
-                return Group.findOne(req.session.group.id)
+                Group.findOne(req.session.group.id)
                     .then(function(group) {
                         return res.json(
                             {
@@ -114,13 +115,22 @@ module.exports = {
 
                                 if (fieldsResult.code === 'ENOENT') return res.badRequest();
 
-                                request(parsedResult.response.task[0]['$'].resultUrl).pipe(fs.createWriteStream(uploadFolder));
+                                async.each([0, 1], function(item, callback) {
+                                    setTimeout(function() {
+                                        fetch(parsedResult.response.task[0]['$'].resultUrl)
+                                            .then(function(result) {
+                                                result.body.pipe(fs.createWriteStream(uploadFolder));
+                                                doc.xml_file = documentPath;
+                                                callback();
+                                            });
+                                    }, 1500);
 
-                                doc.xml_file = documentPath;
-                                doc.status = 'Terminer';
-                                doc.save();
+                                }, function(err) {
+                                    doc.status = 'Terminer';
+                                    doc.save();
+                                    return res.ok();
+                                });
 
-                                return res.ok();
                             });
 
                         }
@@ -150,6 +160,7 @@ module.exports = {
                     }
 
                     group.batch_process_nb = group.batch_process_nb + 1;
+                    group.save();
 
                     req.session.group = group;
 

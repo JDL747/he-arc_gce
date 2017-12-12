@@ -32,9 +32,9 @@ module.exports = {
      * @return {[type]}     [description]
      */
     update: function(req, res) {
-        Group.update(req.body.id, req.body)
+        Group.update(req.param('id'), req.body)
             .then(function(group) {
-                req.session.group = group;
+                req.session.group = group[0];
                 return res.ok();
             });
     },
