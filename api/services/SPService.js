@@ -127,17 +127,18 @@ module.exports = {
                 let data = {};
 
                 String.prototype.capitalize = function(){
-                   return this.replace( /(^|\s)([a-z])/g , function(m,p1,p2){ return p1+p2.toUpperCase(); } );
+                   return this.replace( /(^|\s)([a-z])/g , function(m, p1 , p2) { return p1+p2.toUpperCase(); } );
                 };
 
                 metadataArray.forEach(function(item) {
-                    let attribute = ((item['$'].id.replace('_', ' ')).toLowerCase().capitalize()).replace(' ', '_x0020_');
+                    let attribute = ((item['$'].id).split(' ').join('_x0020_'));
                     data[attribute] = item.value[0];
+                    console.log(attribute);
                 });
 
                 data['ContentTypeId'] = spLibContentTypeID;
 
-                return done({'metadata': data, 'currentContentType': spLibContentTypeID });
+                return done({ 'metadata': data, 'currentContentType': spLibContentTypeID });
 
             });
 
