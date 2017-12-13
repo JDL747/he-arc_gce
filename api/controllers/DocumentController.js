@@ -258,11 +258,9 @@ module.exports = {
                         doc.sp_list_item_all_fields = JSON.parse(body).d.ListItemAllFields.__deferred.uri;
                         doc.save();
 
-                        SPService.updateFileMetaData(opts, function() {
-
+                        SPService.updateFileMetaData(opts, function(results) {
+                            return res.json(JSON.parse(body));
                         });
-
-                        return res.json(JSON.parse(body));
 
                     });
 

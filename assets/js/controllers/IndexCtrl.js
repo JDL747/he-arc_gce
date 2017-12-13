@@ -38,6 +38,11 @@ angular.module('gce-app.controllers', [])
             });
         }
 
+        $scope.clearSession = function() {
+            $window.localStorage.clear();
+            $state.go($state.current, {}, { reload: true });
+        };
+
     }
 
 ]);

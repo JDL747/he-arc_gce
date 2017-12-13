@@ -20,6 +20,9 @@
                     </a>
                 </li>
             </ul>
+            <div class="group-info" ng-if="groupName" ng-click="clearSession()">
+                <i class="pe-7s-users"></i> {{ groupName }}
+            </div>
         </div>
     </div>
     <div class="main-panel">
@@ -37,9 +40,6 @@
                     <ul class="nav navbar-nav navbar-right">
                         <li>
                             <a ui-sref="index.settings"><i class="pe-7s-config"></i> Paramètres</a>
-                        </li>
-                        <li ng-if="groupName">
-                            <a><i class="pe-7s-users"></i> {{ groupName }}</a>
                         </li>
                     </ul>
                 </div>

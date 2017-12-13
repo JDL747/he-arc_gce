@@ -63,7 +63,7 @@ module.exports = {
             request(options, function(error, response, body) {
                 if (error) sails.log.error(error);
                 console.log(body)
-                return done();
+                return done(body);
             });
 
         });
@@ -170,20 +170,20 @@ module.exports = {
             let results = JSON.parse(body).d.results;
 
             results.forEach(function(item, index) {
+
                if (item.Group === 'Types de contenu personnalisés') {
                     let contentType = { 'name': item.Name, 'description': item.Description , 'id': item.StringId };
                     contentTypes.push(contentType);
                }
+
             });
 
             Group.update(opts.group.id, { 'sp_library_content_type': contentTypes })
                 .then(function(group) {
                     opts.group = group[0];
-
                     SPService._processXML(opts, function(result) {
                         return done(result);
                     });
-
                 });
 
         });

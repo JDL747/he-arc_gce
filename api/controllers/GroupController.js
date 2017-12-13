@@ -72,11 +72,21 @@ module.exports = {
 
                         let templatePath = path.join(__dirname, `../../assets/uploads/ocr/${group.folder_name}/templates/${uploadedFile.filename}`);
 
+                        switch(uploadedFile.filename) {
+                            case 'template_1.xml':
+                                group.abbyy_template_1 = `${group.folder_name}/templates/${uploadedFile.filename}`;
+                                break;
+                            case 'template_2.xml':
+                                group.abbyy_template_2 = `${group.folder_name}/templates/${uploadedFile.filename}`;
+                                break;
+                            case 'template_3.xml':
+                                group.abbyy_template_3 = `${group.folder_name}/templates/${uploadedFile.filename}`;
+                                break;
+                        }
+
                         fs.rename(uploadedFile.fd, templatePath, function(err) {
-                            if (err) return sails.log.error(err);
-                            group[templates[files.indexOf(uploadedFile)]] = `${group.folder_name}/templates/${uploadedFile.filename}`;
+                            if (err) return res.badRequest(err);
                             group.save();
-                            sails.log.info('The file was saved!');
                         });
 
                         callback();
