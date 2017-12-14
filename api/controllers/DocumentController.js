@@ -64,6 +64,8 @@ module.exports = {
 
                     parseString(taskResult, function (err, parsedResult) {
 
+                        if (!parsedResult.response) return res.badRequest();
+
                         doc.result_url = parsedResult.response.task[0]['$'].resultUrl;
                         doc.status = doc.status = 'Prêt pour la LAD';
 
@@ -105,6 +107,8 @@ module.exports = {
                 return ABBYYService.getTaskStatus(cridentials, function(taskResult) {
 
                     parseString(taskResult, function (err, parsedResult) {
+
+                        if (!parsedResult.response) return res.badRequest();
 
                         if (parsedResult.response.task[0]['$'].status === 'Completed') {
 
@@ -174,7 +178,8 @@ module.exports = {
                         }
 
                         fs.rename(uploadedFile.fd, uploadFolder, function(err) {
-                            if (err) return sails.log.error(err);
+                            if (err) return res.badRequest(err);
+
                             Document.create({
                                 'batch': group.batch_process_nb,
                                 'name': uploadedFile.filename,
